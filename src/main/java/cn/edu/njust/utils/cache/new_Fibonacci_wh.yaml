@@ -1,0 +1,98 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: fibonacci1-deployment
+spec:
+  selector:
+    matchLabels:
+      app: fibonacci1-pod
+  replicas: 1 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: fibonacci1-pod
+    spec:
+      hostAliases:
+        - ip: 192.168.2.81
+          hostnames:
+            - myfibonacci.wh
+      nodeSelector:
+        testnode: fibonacci1
+      containers:
+        - name: fibonacci1-pod
+          image: mufengziyu/micronaut:0.0.4
+          imagePullPolicy: IfNotPresent
+          command: ['./com.example.application']
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 1
+            periodSeconds: 10
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 1
+            periodSeconds: 6
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "1"
+            requests:
+              memory: "512Mi"
+              cpu: "1"
+
+# 修改之后的样子
+#apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+#  kind: Deployment
+#  metadata:
+#    name: rubis-deployment
+#  spec:
+#    selector:
+#      matchLabels:
+#        app: rubis-pod
+#    replicas: 1 # tells deployment to run 2 pods matching the template
+#    template:
+#      metadata:
+#        labels:
+#          app: rubis-pod
+#      spec:
+#        hostAliases:
+#          - ip: 192.168.7.20
+#            hostnames:
+#              - test.kyxl
+#        nodeSelector:
+#          nodename: rubis
+#        containers:
+#          - name: rubis-pod
+#            image: mufengziyu/micronaut:0.0.4
+#            imagePullPolicy: IfNotPresent
+#            command: ['./com.example.application']
+#            ports:
+#              - containerPort: 8080
+#            livenessProbe:
+#              tcpSocket:
+#                port: 8080
+#              initialDelaySeconds: 1
+#              periodSeconds: 10
+#            readinessProbe:
+#              failureThreshold: 3
+#              httpGet:
+#                path: /health
+#                port: 8080
+#              initialDelaySeconds: 1
+#              periodSeconds: 6
+#              successThreshold: 1
+#              timeoutSeconds: 1
+#            resources:
+#              limits:
+#                memory: "512Mi"
+#                cpu: "1"
+#              requests:
+#                memory: "512Mi"
+#                cpu: "1"

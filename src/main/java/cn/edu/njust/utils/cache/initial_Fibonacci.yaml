@@ -1,0 +1,57 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: rubis-deployment
+spec:
+  selector:
+    matchLabels:
+      app: rubis-pod
+  replicas: 1 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: rubis-pod
+    spec:
+      nodeSelector:
+        nodename: rubis
+      hostAliases:
+        - ip: 192.168.7.20
+          hostnames:
+            - test.kyxl
+      containers:
+        - name: rubis-pod
+          image: mufengziyu/fibonacci:2.0.6
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 12
+            periodSeconds: 10
+          readinessProbe:
+            failureThreshold: 5
+            httpGet:
+              path: Fibonacci/?param1=1&param2=1
+              port: 8080
+            initialDelaySeconds: 12
+            periodSeconds: 4
+            successThreshold: 2
+            timeoutSeconds: 2
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "0.5"
+            requests:
+              memory: "256Mi"
+              cpu: "0.5"
+          volumeMounts:
+            - name: config-volume
+              mountPath: /usr/local/tomcat/conf/server.xml
+              subPath: server.xml
+      volumes:
+        - name: config-volume
+          configMap:
+            name: special-config-fibonacci1
+
+

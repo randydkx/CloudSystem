@@ -13,6 +13,8 @@ public class Request {
     private Timestamp arrivalTime;
     private String name;
     private String receiveAddr;
+    //请求时间
+    private String requestTime;
 
     /* 原项目代码的意思是 这是streamNamespacedPodLog返回的东西
      * AccessLog --- R-addr=192.168.83.5 --- Time=09/Apr/2020:02:09:01 +0000 --- Body_bytes_send=649

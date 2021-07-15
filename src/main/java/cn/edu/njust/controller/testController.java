@@ -1,6 +1,8 @@
 package cn.edu.njust.controller;
+
 import cn.edu.njust.entity.*;
 import com.alibaba.fastjson.JSONObject;
+import io.kubernetes.client.openapi.apis.CoreV1Api;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,13 +24,18 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import cn.edu.njust.entity.*;
+import cn.edu.njust.utils.publicclouds.*;
+import cn.edu.njust.utils.kubenetecontrol.*;
+
 @Controller
 @RequestMapping(value = "/test")
 public class testController {
 
     @RequestMapping(value = "/fun")
-    public String fun(){
+    public String fun() throws InterruptedException {
         System.out.println("helloworld");
+//        CoreV1Api coreApi = Connect2System.getAPI();
         return "page/test";
     }
 }
