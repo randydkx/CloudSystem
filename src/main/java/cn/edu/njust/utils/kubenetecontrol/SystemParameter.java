@@ -1,6 +1,11 @@
 package cn.edu.njust.utils.kubenetecontrol;
 
 
+import cn.edu.njust.entity.Request;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class SystemParameter {
 
 	public static long controlinterval=250;

@@ -27,6 +27,7 @@ public class ControlCenter {
 		//double uptime1=MMSModeloptimal.getLatency(5,100,20).doubleValue();
 		
 		Date date=new Date();
+//		设置日志相关信息
 		String datestr=date.toString().replace(":", "-");
 		String outputfilename=SystemParameter.database+"\\logs\\ConsoleLog-"+datestr+".json";
   		outputfilename=outputfilename.replace(" ", "");
@@ -48,7 +49,7 @@ public class ControlCenter {
 		controlcenter.fibanaci_deployment.name="rubis-deployment";
 		controlcenter.fibanaci_deployment.containernum=SystemParameter.Maximum_Container;
 		
-		//controlcenter.logmanager.readLogs();
+		//启动读日志线程
 		Thread t = new Thread(controlcenter.logmanager);
 		t.start();
 
@@ -74,7 +75,7 @@ public class ControlCenter {
 		  //controlcenter.clustermanager.setContainerCount("default", "rubis-deployment", 0);
 		 // Thread.sleep(1000);
 		  controlcenter.clustermanager.setContainerCount("default", "rubis-deployment", 1);
-		  controlcenter.clustermanager.setContainerCount("default", "rubis-deployment", SystemParameter.Maximum_Container);
+//		  controlcenter.clustermanager.setContainerCount("default", "rubis-deployment", SystemParameter.Maximum_Container);
 		  
 		  while(controlcenter.readingoldlog)
 		  {

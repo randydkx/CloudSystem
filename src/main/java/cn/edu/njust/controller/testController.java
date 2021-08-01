@@ -1,6 +1,7 @@
 package cn.edu.njust.controller;
 
 import cn.edu.njust.entity.*;
+import cn.edu.njust.service.LogService;
 import com.alibaba.fastjson.JSONObject;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
 import org.apache.commons.io.FilenameUtils;
@@ -33,9 +34,11 @@ import cn.edu.njust.utils.kubenetecontrol.*;
 public class testController {
 
     @RequestMapping(value = "/fun")
-    public String fun() throws InterruptedException {
+    public String fun(){
         System.out.println("helloworld");
-//        CoreV1Api coreApi = Connect2System.getAPI();
+
+        CoreV1Api coreApi = Connect2System.getAPI();
+        LogService.getRequests();
         return "page/test";
     }
 }

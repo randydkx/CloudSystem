@@ -46,7 +46,7 @@ public class LocalClusterAgent implements DataCenterAgent {
 		vmtypelist.add(type1);
 		
 		VMType type2=new VMType();
-		type2.count_limit=0;
+		type2.count_limit=1;
 		type2.datacentername=dataCenterName;
 		type2.name="i5";
 		type2.priceinterval=SystemParameter.pricinginterval;
@@ -55,8 +55,9 @@ public class LocalClusterAgent implements DataCenterAgent {
 		vmtypelist.add(type2);
 		
 		ArrayList<String> nodes=new ArrayList<String>();
+//		添加对应于vmtype1的node列表，列表中保存node的名称
 		nodemaps.put(type1, nodes);
-		nodes.add("node-1");
+		nodes.add("kube-1");
 		//nodes.add("k8s-node1");
 		//nodes.add("k8s-node2");
 		//nodes.add("k8s-node3");
@@ -65,6 +66,7 @@ public class LocalClusterAgent implements DataCenterAgent {
 		
 		ArrayList<String> nodes2=new ArrayList<String>();
 		nodemaps.put(type2, nodes2);
+		nodes2.add("kube-1");
 		//nodes2.add("czcworker2");
 		//nodes2.add("czcworker4");
 		

@@ -21,7 +21,7 @@ public class ClusterManager {
 	//DataCenterAgent dcagent=null;
 	ArrayList<DataCenterAgent> dcagentlist=new ArrayList<DataCenterAgent>();
 	private double existingrental=0;//rental cost of released VMs
-	
+
 	public ClusterManager(ControlCenter pcontrol_center) {
 		super();
 		this.control_center=pcontrol_center;
@@ -416,8 +416,8 @@ public class ClusterManager {
 	    Boolean force = null; // Boolean | Force is going to \"force\" Apply requests. It means user will re-acquire conflicting fields owned by other people. Force flag must be unset for non-apply patch requests.
 	   
 	    try {
-	    	api.patchNamespacedDeployment(deploymentname, namespace, body, pretty, dryRun, fieldManager, force);
-	      //Log.printLine(result);
+	    	V1Deployment result =  api.patchNamespacedDeployment(deploymentname, namespace, body, pretty, dryRun, fieldManager, force);
+//	      Log.printLine(result);
 	    } catch (ApiException e) {
 	    	Log.printLine("Exception when calling ");
 	    	Log.printLine("Status code: " + e.getCode());

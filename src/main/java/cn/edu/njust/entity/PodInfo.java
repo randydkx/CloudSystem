@@ -16,11 +16,11 @@ public class PodInfo {
     private String containers; //理论上只有一个容器
 
     public PodInfo(String namespace, String name, String status, String age, String containers) {
-        this.namespace = namespace;
-        this.name = name;
-        this.status = status;
-        this.age = age;
-        this.containers = containers;
+        this.setNamespace(namespace);
+        this.setName(name);
+        this.setAge(age);
+        this.setStatus(status);
+        this.setContainers(containers);
     }
 
     @Override
@@ -32,5 +32,45 @@ public class PodInfo {
                 ", age='" + age + '\'' +
                 ", containers='" + containers + '\'' +
                 '}';
+    }
+
+    public String getNamespace() {
+        return namespace;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public String getContainers() {
+        return containers;
+    }
+
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public void setContainers(String containers) {
+        this.containers = containers;
     }
 }
