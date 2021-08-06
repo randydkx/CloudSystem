@@ -28,9 +28,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4f2101de-9581-43ef-8c31-99e9c72c678c" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/edu/njust/service/InfoServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/edu/njust/entity/PodInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/edu/njust/entity/PodInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/edu/njust/entity/NodeInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/edu/njust/entity/NodeInfo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/edu/njust/service/InfoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/edu/njust/service/InfoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cn/edu/njust/entity/NodeInfo.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cn/edu/njust/entity/NodeInfo.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/cn/edu/njust/service/InfoService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cn/edu/njust/service/InfoService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,6 +48,7 @@
         <option value="JavaScript File" />
         <option value="Interface" />
         <option value="Class" />
+        <option value="JUnit4 Test Class" />
       </list>
     </option>
   </component>
@@ -68,7 +73,6 @@
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
-        <option name="mavenHome" value="C:\Program Files\JetBrains\IntelliJ IDEA 2020.2.1\plugins\maven\lib\maven3" />
         <option name="userSettingsFile" value="D:\apache-maven-3.3.9\conf\settings.xml" />
       </MavenGeneralSettings>
     </option>
@@ -93,6 +97,9 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="yaml&#10;JAVA" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
+    <property name="create.test.in.the.same.root" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15429688" />
@@ -100,17 +107,6 @@
     <property name="settings.editor.selected.configurable" value="MavenSettings" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\randylo.DESKTOP-EK6R5U2\Desktop\CloudSystem\src\main\java\cn\edu\njust\utils\cache" />
-      <recent name="C:\Users\randylo.DESKTOP-EK6R5U2\Desktop\CloudSystem\webapp" />
-      <recent name="C:\Users\randylo.DESKTOP-EK6R5U2\Desktop\CloudSystem\src\main\java" />
-      <recent name="C:\Users\randylo.DESKTOP-EK6R5U2\Desktop\CloudSystem\src\main" />
-      <recent name="C:\Users\randylo.DESKTOP-EK6R5U2\Desktop\CloudSystem" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="cn.edu.njust.interceptor" />
-      <recent name="cn.edu.njust.bean" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\randylo.DESKTOP-EK6R5U2\Desktop\CloudSystem\src\main\java\cn\edu\njust\utils\cache" />
       <recent name="C:\Users\randylo.DESKTOP-EK6R5U2\Desktop\CloudSystem\src\main\java\cn\edu\njust\utils" />
@@ -118,19 +114,25 @@
       <recent name="C:\Users\randylo.DESKTOP-EK6R5U2\Desktop\CloudSystem\webapp\WEB-INF" />
       <recent name="C:\Users\randylo.DESKTOP-EK6R5U2\Desktop\CloudSystem\src\main\java\cn\edu\njust\mapper" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\randylo.DESKTOP-EK6R5U2\Desktop\CloudSystem\src\main\java\cn\edu\njust\utils\cache" />
+      <recent name="C:\Users\randylo.DESKTOP-EK6R5U2\Desktop\CloudSystem\webapp" />
+      <recent name="C:\Users\randylo.DESKTOP-EK6R5U2\Desktop\CloudSystem\src\main\java" />
+      <recent name="C:\Users\randylo.DESKTOP-EK6R5U2\Desktop\CloudSystem\src\main" />
+      <recent name="C:\Users\randylo.DESKTOP-EK6R5U2\Desktop\CloudSystem" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="cn.edu.njust.service" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="cn.edu.njust.interceptor" />
+      <recent name="cn.edu.njust.bean" />
+    </key>
   </component>
-  <component name="RunManager" selected="Application.InfoService">
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="JUnit.InfoServiceTest">
     <configuration name="ControlCenter" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="cn.edu.njust.utils.kubenetecontrol.ControlCenter" />
       <module name="CloudSystem" />
@@ -153,6 +155,48 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="InfoServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CloudSystem" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cn.edu.njust.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="cn.edu.njust.service" />
+      <option name="MAIN_CLASS_NAME" value="cn.edu.njust.service.InfoServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="InfoServiceTest.testGetPodInfo" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CloudSystem" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cn.edu.njust.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="cn.edu.njust.service" />
+      <option name="MAIN_CLASS_NAME" value="cn.edu.njust.service.InfoServiceTest" />
+      <option name="METHOD_NAME" value="testGetPodInfo" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -294,6 +338,8 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.InfoServiceTest" />
+        <item itemvalue="JUnit.InfoServiceTest.testGetPodInfo" />
         <item itemvalue="Application.InfoService" />
         <item itemvalue="Application.ControlCenter" />
       </list>
@@ -317,6 +363,8 @@
       <workItem from="1624613059376" duration="5830000" />
       <workItem from="1624619144295" duration="71000" />
       <workItem from="1627634326841" duration="3015000" />
+      <workItem from="1628240719763" duration="970000" />
+      <workItem from="1628241914299" duration="1464000" />
     </task>
     <servers />
   </component>
