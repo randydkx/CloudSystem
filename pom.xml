@@ -88,7 +88,7 @@
       <artifactId>junit</artifactId>
       <version>4.11</version>
       <!-- 指定范围，在测试时才会加载 -->
-      <scope>test</scope>
+<!--      <scope>test</scope>-->
     </dependency>
 
     <!-- 添加spring核心依赖 -->
@@ -269,6 +269,12 @@
     <dependency>
       <groupId>org.jetbrains</groupId>
       <artifactId>annotations</artifactId>
+      <version>RELEASE</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
       <version>RELEASE</version>
       <scope>compile</scope>
     </dependency>

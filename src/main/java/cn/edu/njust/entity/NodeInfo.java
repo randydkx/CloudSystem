@@ -9,4 +9,17 @@ package cn.edu.njust.entity;
 public class NodeInfo {
     private String address;
     private String name;
+
+    public NodeInfo(String address, String name) {
+        this.address = address;
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "NodeInfo{" +
+                "address='" + address + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
