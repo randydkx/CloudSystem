@@ -33,7 +33,7 @@ public class LogUtil{
 
         CoreV1Api coreApi = Connect2System.getAPI();
 
-        Connect2System.client.setReadTimeout(100);
+        Connect2System.client.setReadTimeout(200);
 
         PodLogs logs = new PodLogs();
         V1Pod pod=null;
@@ -88,7 +88,6 @@ public class LogUtil{
                 // TODO Auto-generated catch block
                 Log.printLine("readLogs()1"+e1.getMessage());
                 try {
-
                     br.close();
                     isr.close();
                     is.close();
@@ -165,7 +164,6 @@ public class LogUtil{
             }
         }
         this.requestList.add(request);
-//        System.out.println(request);
 
     }
 }

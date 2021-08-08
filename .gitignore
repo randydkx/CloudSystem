@@ -5,3 +5,4 @@ desktop.ini
 target/
 .idea/
 out/
+.DS_Store

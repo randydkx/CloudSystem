@@ -32,6 +32,7 @@ import cn.edu.njust.utils.kubenetecontrol.*;
 @Controller
 @RequestMapping(value = "/test")
 public class testController {
+    public double a = 1;
 
     @RequestMapping(value = "/fun")
     public String fun(){
@@ -40,5 +41,20 @@ public class testController {
         CoreV1Api coreApi = Connect2System.getAPI();
         LogService.getRequests();
         return "page/test";
+    }
+    @RequestMapping(value = "/fun2")
+    public  @ResponseBody List<Request>  function2(Model model){
+        List<Request> requestList = LogService.getRequests();
+        return requestList;
+    }
+
+    @RequestMapping(value = "/fun3")
+    public @ResponseBody List<Double> function3(Model model){
+        List<Double> ret = new ArrayList<Double>();
+        a++;
+        for (int i=0;i<10;i++){
+            ret.add(a + i);
+        }
+        return ret;
     }
 }

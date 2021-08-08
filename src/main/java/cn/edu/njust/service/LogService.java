@@ -1,18 +1,19 @@
 package cn.edu.njust.service;
 
 import cn.edu.njust.entity.Request;
-import cn.edu.njust.utils.kubenetecontrol.ControlCenter;
-import cn.edu.njust.utils.kubenetecontrol.EventManager;
-import cn.edu.njust.utils.kubenetecontrol.LogsManager;
-import cn.edu.njust.utils.kubenetecontrol.SystemParameter;
+import cn.edu.njust.utils.kubenetecontrol.*;
 import cn.edu.njust.utils.publicclouds.ClusterManager;
 import cn.edu.njust.utils.publicclouds.Deployment;
 import cn.edu.njust.utils.publicclouds.VMType;
 import cn.edu.njust.utils.scheduler.IDataCenterScheduler;
+import io.kubernetes.client.openapi.apis.CoreV1Api;
+import io.kubernetes.client.openapi.models.V1Pod;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author TYX
@@ -37,7 +38,7 @@ public class LogService {
         return logmanager.requestList;
     }
 
-//    public static void main(String[] args) {
-//        List<Request> requestList = getRequests();
-//    }
+    public static void main(String[] args) {
+        List<Request> requestList = getRequests();
+    }
 }
