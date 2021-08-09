@@ -36,7 +36,13 @@ public class InfoService {
         api = new CoreV1Api();
     }
 
-    public Usage getUsage() {
+    /**
+     * 根据pod名获取该pod的CPU、内存等信息<br>
+     *     ！！！未完善！！
+     * @param podName String pod名称
+     * @return Usage 该pod的使用量信息
+     */
+    private Usage getUsageByPodName(String podName) {
         return null;
     }
 
@@ -84,6 +90,8 @@ public class InfoService {
             if(containerStatuses!=null) containerName=containerStatuses.get(containerStatuses.size()-1).getName();
 //            System.out.println("containerStatuses.get(last):"+containerStatuses);
             pod=new PodInfo(podNamespace,podName,podStatus,podAge,containerName);
+            Usage usage=getUsageByPodName(podName);
+            pod.setUsage(usage);
             res.add(pod);
         }
         return res;

@@ -14,6 +14,7 @@ public class PodInfo {
     private String status;
     private String age;
     private String containers; //理论上只有一个容器
+    private Usage usage;
 
     public PodInfo(String namespace, String name, String status, String age, String containers) {
         this.setNamespace(namespace);
@@ -72,5 +73,9 @@ public class PodInfo {
 
     public void setContainers(String containers) {
         this.containers = containers;
+    }
+
+    public void setUsage(Usage usage) {
+        this.usage = usage;
     }
 }
