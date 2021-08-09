@@ -10,7 +10,6 @@ import java.sql.Timestamp;
  * @createTime 2021/6/25 14:54
  **/
 public class Usage {
-    private Timestamp timestamp;
     private double nowCPU;
     private double totalCPU;
     private double nowMemory;
