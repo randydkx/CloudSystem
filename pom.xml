@@ -82,6 +82,13 @@
       <version>7.0</version>
     </dependency>
 
+    <!--远程Linux连接依赖-->
+    <dependency>
+      <groupId>com.jcraft</groupId>
+      <artifactId>jsch</artifactId>
+      <version>0.1.55</version>
+    </dependency>
+
     <!-- 添加junit4依赖 -->
     <dependency>
       <groupId>junit</groupId>
