@@ -15,6 +15,7 @@ import io.kubernetes.client.util.KubeConfig;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -173,6 +174,77 @@ public class InfoService {
         return res;
     }
 
+    public HashMap<Object,Object> getNodeUsageByName(String nodeName){
+        LinuxDataBase masterDataBase=new LinuxDataBase(MainUtils.USERNAME,MainUtils.PASSWORD,
+                MainUtils.MASTER_IP, MainUtils.PORT);
+
+        LinuxShellUtil linux = new LinuxShellUtil();
+        HashMap<Object,Object> map = new HashMap<Object, Object>();
+//        通过listpod获取的是集群的全部pod
+        String result = (String) linux.getData(masterDataBase,"kubectl describe node " + nodeName).get("return");
+//        System.out.println(result);
+        Usage usage = new Usage();
+        String[] resultLine = result.split("\n");
+        for(int i=0;i<resultLine.length;i++){
+            String[] items = resultLine[i].trim().split("\\s+");
+            if((items.length == 3) && items[0].equals("Resource") && items[1].equals("Requests") && items[2].equals("Limits")){
+                int cpuIndex = i + 2;
+                int memoryIndex = i + 3;
+                String[] cpuLine = resultLine[cpuIndex].trim().split("\\s+");
+                String[] memoryLine = resultLine[memoryIndex].trim().split("\\s+");
+                if (cpuLine[1].equals("0")){
+                    usage.setCPUAmount(0);
+                    usage.setCPUAmountStr("0m");
+                }else{
+                    usage.setCPUAmount(Double.parseDouble(cpuLine[1].substring(0,cpuLine[1].length() - 1)));
+                    usage.setCPUAmountStr(cpuLine[1]);
+                }
+                usage.setCPURatio(Double.parseDouble(cpuLine[2].substring(1,cpuLine[2].length() - 2)));
+                if(memoryLine[1].equals("0")){
+                    usage.setMemoryStr("0Mi");
+                    usage.setMemory(0);
+                }else{
+                    usage.setMemoryStr(memoryLine[1]);
+                    usage.setMemory(Double.parseDouble(memoryLine[1].substring(0,cpuLine[1].length() - 2)));
+                }
+                usage.setMemoryRatio(Double.parseDouble(memoryLine[2].substring(1,memoryLine[2].length() - 2)));
+            }
+            if(items[0].equals("Roles:")){
+                map.put("role",items[1].equals("<none>") ? "node":"master");
+            }
+            if (items[0].equals("cpu:")){
+                map.put("coreNum",Integer.parseInt(items[1]));
+            }
+//            计算磁盘总量以及磁盘已用(得到的是瞬时存储)
+//            if (items[0].equals("Capacity:")){
+//                String[] diskCapacityLine = resultLine[i + 2].trim().split("\\s+");
+////                结果使用Ki表示的
+//                if(diskCapacityLine[1].contains("Ki")){
+//                    usage.setDisk(MainUtils.limitPrecision((Double.parseDouble(diskCapacityLine[1].substring(0,diskCapacityLine[1].length() - 2)) / (1024 * 1024)),2));
+//                }else {
+//                    usage.setDisk(MainUtils.limitPrecision((Double.parseDouble(diskCapacityLine[1]) / (1024 * 1024 * 1024)),2));
+//                }
+//            }
+//            if (items[0].equals("Allocatable:")){
+//                String[] diskCapacityLine = resultLine[i + 2].trim().split("\\s+");
+//                Double total = usage.getDisk();
+//                Double unused = 0.0;
+////                不同的表示按照不同的计算法得到GB形式的数据
+//
+//                if(diskCapacityLine[1].contains("Ki")){
+//                    unused = Double.parseDouble(diskCapacityLine[1].substring(0,diskCapacityLine[1].length() - 2)) / (1024 * 1024);
+//                }else{
+//                    unused = Double.parseDouble(diskCapacityLine[1]) / (1024 * 1024 * 1024);
+//                }
+//                System.out.println(unused);
+//
+//                usage.setDiskRatio(MainUtils.limitPrecision((total - unused) / total,2));
+//            }
+        }
+        map.put("usage",usage);
+        return map;
+    }
+
     /**
      * getNodeInfo 返回node相关信息
      * @return List<NodeInfo> node相关信息的list
@@ -188,6 +260,11 @@ public class InfoService {
             String nodeName=addresses.get(1).getAddress();
             String nodeAddress=addresses.get(0).getAddress();
             nodeInfo=new NodeInfo(nodeAddress,nodeName);
+//            通过nodeName获取节点的CPU和内存用量
+            HashMap<Object,Object> map = this.getNodeUsageByName(nodeInfo.getName());
+            nodeInfo.setUsage((Usage)map.get("usage"));
+            nodeInfo.setCoreNum((int)map.get("coreNum"));
+            nodeInfo.setRole((String)map.get("role"));
             res.add(nodeInfo);
         }
 

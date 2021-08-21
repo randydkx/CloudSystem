@@ -25,7 +25,7 @@ public class InfoServiceTest {
         }
     }
 
-    //    @Test
+        @Test
     public void testGetNodeInfo() throws IOException, ApiException {
         InfoService infoService=new InfoService("C:\\config");
         List<NodeInfo> nodeInfos = infoService.getNodeInfo();

@@ -16,7 +16,7 @@ public class Usage {
     private String memoryStr = "0Mi";//形式上是70Mi
     private double memory = 0;//形式上是70
     private double memoryRatio = 0;
-    private double Disk = 0;
+    private double Disk = 0; // 40->40G
     private double diskRatio = 0;
 
     public String getCPUAmountStr() {
