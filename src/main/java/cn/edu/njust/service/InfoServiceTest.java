@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
  * testGetContainerInfo还没写完
  */
 public class InfoServiceTest {
-    //    @Test
+        @Test
     public void testGetPodInfo() throws IOException, ApiException {
         InfoService infoService=new InfoService("C:\\config");
         List<PodInfo> podInfos = infoService.getPodInfo();

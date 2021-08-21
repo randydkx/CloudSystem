@@ -1,12 +1,19 @@
 package cn.edu.njust.utils.linuxshell;
 
+import cn.edu.njust.entity.Usage;
+import cn.edu.njust.utils.MainUtils;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+import org.junit.Test;
+
 import java.io.InputStream;
+import java.sql.SQLOutput;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -122,9 +129,9 @@ public class LinuxShellUtil {     //其他Linux机器执行脚本工具类   需
      */
     public static void main(String[] args) {
 
-        String ip = "192.168.52.10";
-        String username = "test";
-        String password = "991011";
+        String ip = MainUtils.MASTER_IP;
+        String username = MainUtils.USERNAME;
+        String password = MainUtils.PASSWORD;
         LinuxDataBase dataBase=new LinuxDataBase();  //  连接数据类
         dataBase.setUsername(username);
         dataBase.setPassword(password);
@@ -132,7 +139,7 @@ public class LinuxShellUtil {     //其他Linux机器执行脚本工具类   需
         dataBase.setPort("22");
         LinuxShellUtil linux = new LinuxShellUtil();
 
-        System.out.println(linux.getData(dataBase,"ls -l"));
+        System.out.println(linux.getData(dataBase,"kubectl describe node node-1"));
 
     }
 }

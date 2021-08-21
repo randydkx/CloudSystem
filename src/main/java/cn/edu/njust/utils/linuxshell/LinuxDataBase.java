@@ -6,6 +6,15 @@ public class LinuxDataBase {
     private String url;
     private String port;
 
+    public LinuxDataBase(String username, String password, String url, String port) {
+        this.username = username;
+        this.password = password;
+        this.url = url;
+        this.port = port;
+    }
+
+    public LinuxDataBase(){}
+
     public String getUsername() {
         return username;
     }
