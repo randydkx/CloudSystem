@@ -1,5 +1,6 @@
 package cn.edu.njust.service;
 
+import cn.edu.njust.entity.ContainerInfo;
 import cn.edu.njust.entity.NodeInfo;
 import cn.edu.njust.entity.PodInfo;
 import io.kubernetes.client.openapi.ApiException;
@@ -37,6 +38,9 @@ public class InfoServiceTest {
     @Test
     public void testGetContainerInfo() throws IOException, ApiException {
         InfoService infoService=new InfoService("C:\\config");
-        infoService.getContainerInfo();
+        List<ContainerInfo> containerInfos = infoService.getContainerInfo();
+        for(ContainerInfo containerInfo:containerInfos){
+            System.out.println(containerInfo);
+        }
     }
 }
