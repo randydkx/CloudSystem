@@ -32,6 +32,7 @@ public class PodInfo {
                 ", status='" + status + '\'' +
                 ", age='" + age + '\'' +
                 ", containers='" + containers + '\'' +
+                ", usage=" + usage +
                 '}';
     }
 
