@@ -98,20 +98,32 @@ public class InfoService {
 
     /**
      * getContainerInfo 返回容器相关数据<br>
-     * ！！！！没写完！！！！
+     * 大致思路是根据空格和换行符分割文本<br>
+     * 由于COMMAND一般有引号修饰，所以用引号作为每一行的标识
      * @return List<ContainerInfo> 容器相关数据的list
      * @throws ApiException api调用异常
      */
     public List<ContainerInfo> getContainerInfo() throws ApiException {
         List<ContainerInfo> res=new ArrayList<>();
         ContainerInfo containerInfo;
+        LinuxDataBase masterDataBase=new LinuxDataBase(MainUtils.USERNAME,MainUtils.PASSWORD,
+                MainUtils.MASTER_IP, MainUtils.PORT);
+//        LinuxDataBase dataBase=new LinuxDataBase("root","991011","192.168.52.10","22");
+        LinuxShellUtil linux = new LinuxShellUtil();
+        HashMap shellHashMap = linux.getData(masterDataBase, "docker ps -a");
+        String shellString= (String) shellHashMap.get("return");
 
-        V1PodList list = api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null);
-
-        for (V1Pod item : list.getItems()) {
-
-            System.out.println(item.getMetadata());
-            System.out.println(item.getStatus());
+        String[] s = shellString.split("\\s{2,}|\\n");
+        int i=0;
+        for(String str:s){
+//            System.out.println(i+":"+str);
+            if(str.contains("\"")){
+                String containerName=s[i+3];
+                String image=s[i-1];
+                containerInfo=new ContainerInfo(containerName,image);
+                res.add(containerInfo);
+            }
+            i++;
         }
         return res;
     }
