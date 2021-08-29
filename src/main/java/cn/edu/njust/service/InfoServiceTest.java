@@ -1,9 +1,11 @@
 package cn.edu.njust.service;
 
 import cn.edu.njust.entity.ContainerInfo;
+import cn.edu.njust.entity.Deployment;
 import cn.edu.njust.entity.NodeInfo;
 import cn.edu.njust.entity.PodInfo;
 import io.kubernetes.client.openapi.ApiException;
+import io.kubernetes.client.openapi.apis.ApiextensionsApi;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -42,5 +44,20 @@ public class InfoServiceTest {
         for(ContainerInfo containerInfo:containerInfos){
             System.out.println(containerInfo);
         }
+    }
+
+    @Test
+    public void testGetDeploymentInfo() throws IOException, ApiException{
+        InfoService infoService = new InfoService("C:\\config");
+        List<Deployment> list = infoService.getAllDeploymentInfo();
+        for (Deployment item:list){
+            System.out.println(item);
+        }
+    }
+
+    @Test
+    public void testChangeReplicas()throws IOException, ApiException{
+        InfoService infoService = new InfoService("C:\\config");
+        infoService.changeDeploymentReplicas("default","rubis-deployment",1);
     }
 }

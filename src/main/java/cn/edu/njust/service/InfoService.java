@@ -4,10 +4,13 @@ import cn.edu.njust.entity.*;
 import cn.edu.njust.utils.linuxshell.LinuxDataBase;
 import cn.edu.njust.utils.linuxshell.LinuxShellUtil;
 import com.sun.org.apache.xpath.internal.operations.Bool;
+import io.kubernetes.client.custom.V1Patch;
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.Configuration;
+import io.kubernetes.client.openapi.apis.AppsV1Api;
 import io.kubernetes.client.openapi.apis.CoreV1Api;
+import io.kubernetes.client.openapi.apis.ExtensionsV1beta1Api;
 import io.kubernetes.client.openapi.models.*;
 import io.kubernetes.client.util.ClientBuilder;
 import io.kubernetes.client.util.KubeConfig;
@@ -31,6 +34,7 @@ import javax.activation.MailcapCommandMap;
  **/
 public class InfoService {
     private CoreV1Api api;
+    private AppsV1Api v1api;
 
     /**
      * Constructor<br>
@@ -42,6 +46,7 @@ public class InfoService {
         ApiClient client = ClientBuilder.kubeconfig(KubeConfig.loadKubeConfig(new FileReader(kubeConfigPath))).build();
         Configuration.setDefaultApiClient(client);
         api = new CoreV1Api();
+        v1api = new AppsV1Api();
     }
 
     /**
@@ -186,6 +191,54 @@ public class InfoService {
         return res;
     }
 
+    /**
+     * 获取所有命名空间的deployment
+     * @return
+     */
+    public List<Deployment> getAllDeploymentInfo() {
+        List<Deployment> ret = new ArrayList<>();
+        try {
+            V1DeploymentList result = v1api.listDeploymentForAllNamespaces(null, null, null, null, null, null, null, null,null);
+            for(V1Deployment item : result.getItems()){
+//                System.out.println(result);
+                Deployment deployment = new Deployment();
+                deployment.setName(item.getMetadata().getName());
+                int available = (item.getStatus().getAvailableReplicas() == null) ? 0 : item.getStatus().getAvailableReplicas();
+                int total = item.getStatus().getReplicas();
+                deployment.setReady(available + "/" + total);
+                deployment.setAvailable(available);
+                deployment.setUpToDate(item.getStatus().getUpdatedReplicas());
+                deployment.setNamespace(item.getMetadata().getNamespace());
+                ret.add(deployment);
+            }
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
+    /**
+     * 更新副本数量
+     * @param namespace
+     * @param name
+     * @param replicas
+     * @return
+     */
+    public boolean changeDeploymentReplicas(String namespace, String name, int replicas) {
+        if (replicas <= 0 ) return false;
+        String jsonPatchStr = "[{\"op\":\"replace\",\"path\":\"/spec/replicas\", \"value\": " + replicas + " }]";
+        V1Patch body = new V1Patch(jsonPatchStr);
+        try {
+            V1Deployment result1 = v1api.patchNamespacedDeployment(name, namespace, body, null, null, null, null);
+        } catch (ApiException e) {
+            e.printStackTrace();
+            System.out.println("replicas 更新失败！");
+            return false;
+        }
+
+        return true;
+    }
+
     public HashMap<Object,Object> getNodeUsageByName(String nodeName){
         LinuxDataBase masterDataBase=new LinuxDataBase(MainUtils.USERNAME,MainUtils.PASSWORD,
                 MainUtils.MASTER_IP, MainUtils.PORT);
@@ -228,30 +281,29 @@ public class InfoService {
                 map.put("coreNum",Integer.parseInt(items[1]));
             }
 //            计算磁盘总量以及磁盘已用(得到的是瞬时存储)
-//            if (items[0].equals("Capacity:")){
-//                String[] diskCapacityLine = resultLine[i + 2].trim().split("\\s+");
-////                结果使用Ki表示的
-//                if(diskCapacityLine[1].contains("Ki")){
-//                    usage.setDisk(MainUtils.limitPrecision((Double.parseDouble(diskCapacityLine[1].substring(0,diskCapacityLine[1].length() - 2)) / (1024 * 1024)),2));
-//                }else {
-//                    usage.setDisk(MainUtils.limitPrecision((Double.parseDouble(diskCapacityLine[1]) / (1024 * 1024 * 1024)),2));
-//                }
-//            }
-//            if (items[0].equals("Allocatable:")){
-//                String[] diskCapacityLine = resultLine[i + 2].trim().split("\\s+");
-//                Double total = usage.getDisk();
-//                Double unused = 0.0;
-////                不同的表示按照不同的计算法得到GB形式的数据
-//
-//                if(diskCapacityLine[1].contains("Ki")){
-//                    unused = Double.parseDouble(diskCapacityLine[1].substring(0,diskCapacityLine[1].length() - 2)) / (1024 * 1024);
-//                }else{
-//                    unused = Double.parseDouble(diskCapacityLine[1]) / (1024 * 1024 * 1024);
-//                }
-//                System.out.println(unused);
-//
-//                usage.setDiskRatio(MainUtils.limitPrecision((total - unused) / total,2));
-//            }
+            if (items[0].equals("Capacity:")){
+                String[] diskCapacityLine = resultLine[i + 2].trim().split("\\s+");
+//                结果使用Ki表示的
+                if(diskCapacityLine[1].contains("Ki")){
+                    usage.setDisk(MainUtils.limitPrecision((Double.parseDouble(diskCapacityLine[1].substring(0,diskCapacityLine[1].length() - 2)) / (1024 * 1024)),2));
+                }else {
+                    usage.setDisk(MainUtils.limitPrecision((Double.parseDouble(diskCapacityLine[1]) / (1024 * 1024 * 1024)),2));
+                }
+            }
+            if (items[0].equals("Allocatable:")){
+                String[] diskCapacityLine = resultLine[i + 2].trim().split("\\s+");
+                Double total = usage.getDisk();
+                Double unused = 0.0;
+//                不同的表示按照不同的计算法得到GB形式的数据
+
+                if(diskCapacityLine[1].contains("Ki")){
+                    unused = Double.parseDouble(diskCapacityLine[1].substring(0,diskCapacityLine[1].length() - 2)) / (1024 * 1024);
+                }else{
+                    unused = Double.parseDouble(diskCapacityLine[1]) / (1024 * 1024 * 1024);
+                }
+
+                usage.setDiskRatio(MainUtils.limitPrecision((total - unused) / total,2));
+            }
         }
         map.put("usage",usage);
         return map;
@@ -283,11 +335,4 @@ public class InfoService {
         return res;
     }
 
-//    public static void main(String[] args) throws IOException, ApiException {
-//        InfoService infoService=new InfoService();
-//        List<PodInfo> podInfo = infoService.getPodInfo("C:\\config");
-//        for(PodInfo pod:podInfo){
-//            System.out.println(pod);
-//        }
-//    }
 }
