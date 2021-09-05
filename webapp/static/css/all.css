@@ -1,0 +1,296 @@
+* {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    height: 100vh;
+    /*//display: flex;*/
+    /*//align-items: center;*/
+    /*//justify-content: center;*/
+    background-color: #d3dafa;
+}
+
+.shell {
+    position: fixed;
+    width: 160px;
+    height: 100%;
+    /*margin-left: 0;*/
+    /*padding-left: 0;*/
+    background-color: #8a98c9;
+    float: left;
+    color: white;
+}
+
+.buttons {
+    margin: 180px 0;
+    color: #fff;
+}
+
+.li {
+    letter-spacing: 2px;
+    font: 600 17px '';
+    padding: 16px 52px;
+    transition: .3s;
+}
+
+.li::after {
+    content: '';
+    position: absolute;
+    left: 20px;
+    margin-top: -22px;
+    display: block;
+    width: 20px;
+    height: 20px;
+    background-color: #fff;
+    border-radius: 50%;
+}
+
+.buttons > li:hover {
+    background-color: #beb5df;
+}
+
+.li:hover ul {
+    width: 228px;
+}
+
+.nav-text {
+    color: #fff;
+    font: 600 17px '';
+    text-decoration: none;
+}
+
+.nodes-select {
+    width: 10%;
+    height: 1080px;
+    margin-top: -1px;
+    border: #6e1881 1px solid;
+    float: right;
+}
+.pod-select{
+    width: 10%;
+    height: 800px;
+    margin-top: -1px;
+    border: #6e1881 1px solid;
+    float: right;
+}
+#nodes-select {
+    width: 50%;
+    height: 60%;
+    margin-left: 32%;
+    margin-top: 20px;
+    /*border: #000000 2px solid;*/
+}
+#pod-select{
+    width: 75%;
+    height: 60%;
+    margin-left: 10%;
+    margin-top: 20px;
+}
+.usage {
+    /*border: black 1px solid;*/
+    width: 75%;
+    height: 350px;
+    margin-left: 16%;
+    /*margin-top: 30px;*/
+}
+.pod-usage{
+    /*border: black 1px solid;*/
+    width: 75%;
+    height: 350px;
+    margin-left: 18%;
+    /*margin-top: 30px;*/
+}
+
+.node-cpu-usage {
+    width: 48%;
+    height: 90%;
+    float: left;
+    /*border: #2a6496 2px solid;*/
+}
+.node-cpu-ratio{
+    width: 48%;
+    height: 90%;
+    float: left;
+    /*border: #2a6496 2px solid;*/
+}
+.pod-cpu-usage{
+    width: 48%;
+    height: 100%;
+    float: left;
+    /*border: #2a6496 2px solid;*/
+}
+.node-memory-usage {
+    width: 48%;
+    height: 90%;
+    float: left;
+    margin-left: 10px;
+    /*border: #6e1881 2px solid;*/
+}
+.node-memory-ratio {
+    width: 48%;
+    height: 90%;
+    float: left;
+    margin-left: 10px;
+    /*border: #6e1881 2px solid;*/
+}
+.pod-memory-usage{
+    width: 48%;
+    height: 100%;
+    float: left;
+    /*border: #6e1881 2px solid;*/
+    margin-left: 10px;
+}
+#node-cpu-use {
+    width: 100%;
+    height: 80%;
+    margin-top: 3%;
+    /*border: #6e1881 1px solid;*/
+}
+#node-cpu-ratio {
+    width: 100%;
+    height: 80%;
+    margin-top: 3%;
+    /*border: #6e1881 1px solid;*/
+}
+#pod-cpu-use {
+    width: 100%;
+    height: 80%;
+    margin-top: 5%;
+    /*border: #6e1881 1px solid;*/
+}
+#node-memory-use {
+     width: 100%;
+     height: 80%;
+     margin-top: 3%;
+     /*border: #6e1881 1px solid;*/
+ }
+#node-memory-ratio {
+    width: 100%;
+    height: 80%;
+    margin-top: 3%;
+    /*border: #6e1881 1px solid;*/
+}
+#pod-memory-use {
+    width: 100%;
+    height: 80%;
+    margin-top: 5%;
+    /*border: #6e1881 1px solid;*/
+}
+.requested {
+    /*border: red 1px solid;*/
+    width: 75%;
+    height: 290px;
+    margin-left: 230px;
+    /*margin-top: 30px;*/
+}
+
+.disk {
+    /*border: white 1px solid;*/
+    width: 75%;
+    height: 290px;
+    margin-left: 230px;
+    /*margin-top: 30px;*/
+}
+
+.Pods {
+    /*border: white 1px solid;*/
+    width: 32%;
+    height: 290px;
+    margin-left: 0px;
+    margin-top: 3%;
+    float: left;
+    /*margin-top: 30px;*/
+}
+
+#pods {
+    width: 100%;
+    height: 80%;
+    margin-top: 5%;
+    /*border: #6e1881 1px solid;*/
+}
+
+.node-cpu-requested {
+    /*border: brown 1px solid;*/
+    width: 32%;
+    height: 290px;
+    margin-left: 0px;
+    margin-top: 3%;
+    float: left;
+}
+
+#node-cpu-request {
+    width: 100%;
+    height: 80%;
+    margin-top: 5%;
+
+    /*border: #6e1881 1px solid;*/
+}
+
+.node-memory-requested {
+    /*border: green 1px solid;*/
+    width: 32%;
+    height: 290px;
+    margin-left: 0px;
+    margin-top: 3%;
+    float: left;
+}
+
+#node-memory-request {
+    width: 100%;
+    height: 80%;
+    margin-top: 5%;
+    /*border: #6e1881 1px solid;*/
+}
+
+.disk-throughout {
+    width: 48%;
+    height: 100%;
+    float: left;
+    /*border: #2a6496 2px solid;*/
+}
+
+#disk-throught {
+    width: 100%;
+    height: 80%;
+    margin-top: 5%;
+    /*border: #6e1881 1px solid;*/
+}
+
+.disk-iops {
+    width: 48%;
+    height: 100%;
+    float: left;
+    margin-left: 10px;
+    /*border: #6e1881 2px solid;*/
+}
+
+#disk-iop {
+    width: 100%;
+    height: 80%;
+    margin-top: 5%;
+    /*border: #6e1881 1px solid;*/
+}
+.container-status{
+    /*border: red 1px solid;*/
+    width: 75%;
+    height: 350px;
+    margin-left: 18%;
+}
+.responseTime{
+    /*border: red 1px solid;*/
+    width: 75%;
+    height: 350px;
+    margin-left: 18%;
+}
+#container-status{
+    width: 100%;
+    height: 70%;
+    /*border: #3cc051 2px solid;*/
+}
+#responseTime{
+    width: 100%;
+    height: 70%;
+    /*border: #3cc051 2px solid;*/
+}

@@ -1,0 +1,176 @@
+
+.over-usage{
+    width: 82%;
+    height: 400px;
+    /*border: black 1px solid;*/
+    float: left;
+    margin-left: 14%;
+    margin-top: 10px;
+}
+.title1{
+    font-size: 30px;
+    color: #3d3d3d;
+    margin-top: 10px;
+    font-family: 华光标题黑_CNKI;
+}
+.title2{
+    font-size: 30px;
+    color: #3d3d3d;
+    font-family: 华光标题黑_CNKI;
+}
+.pod-title2{
+    font-size: 30px;
+    color: #3d3d3d;
+    font-family: 华光标题黑_CNKI;
+    margin-left: 10%;
+}
+.deploy-title2{
+    font-size: 30px;
+    color: #3d3d3d;
+    font-family: 华光标题黑_CNKI;
+    margin-left: 5%;
+}
+.cpu-usage-title{
+    margin-top: 5%;
+    width: 100%;
+    font-size: 25px;
+    margin-left: 40%;
+}
+.cpu-ratio-title{
+    margin-top: 5%;
+    width: 100%;
+    font-size: 25px;
+    margin-left: 40%;
+}
+.memory-usage-title{
+    margin-top: 5%;
+    width: 100%;
+    font-size: 25px;
+    margin-left: 37%;
+}
+.memory-ratio-title{
+    margin-top: 5%;
+    width: 100%;
+    font-size: 25px;
+    margin-left: 37%;
+}
+.pod-usage-title{
+    margin-top: 5%;
+    width: 100%;
+    font-size: 18px;
+    margin-left: 37%;
+}
+.cpu-requeset-title{
+    margin-top: 5%;
+    width: 100%;
+    font-size: 18px;
+    margin-left: 30%;
+}
+.memory-request-title{
+    margin-top: 5%;
+    width: 100%;
+    font-size: 18px;
+    margin-left: 25%;
+}
+.disk-throughout-title{
+    margin-top: 5%;
+    width: 100%;
+    font-size: 20px;
+    margin-left: 37%;
+    margin-top: 10%;
+}
+.disk-iops-title{
+    margin-top: 5%;
+    width: 100%;
+    font-size: 20px;
+    margin-left: 40%;
+    margin-top: 10%;
+}
+.node-title{
+    margin-top: 29%;
+    width: 66%;
+    height: 30px;
+    font-size: 18px;
+    margin-left: 20%;
+    border: #6d6d6d 2px solid;
+}
+.pod-title{
+    margin-top: 29%;
+    width: 56%;
+    height: 30px;
+    font-size: 18px;
+    margin-left: 22%;
+    border: #6d6d6d 2px solid;
+}
+.pod-cpu-title{
+    margin-top: 5%;
+    width: 100%;
+    font-size: 25px;
+    margin-left: 40%;
+}
+.pod-memory-title{
+    margin-top: 5%;
+    width: 100%;
+    font-size: 25px;
+    margin-left: 40%;
+}
+.container-status-title{
+    margin-top: 5%;
+    width: 100%;
+    font-size: 25px;
+    margin-left: 40%;
+}
+.responseTime-title{
+    /*margin-top: 5%;*/
+    width: 100%;
+    font-size: 25px;
+    margin-left: 40%;
+}
+.cpu-usage{
+    width: 49%;
+    height: 300px;
+    /*border: brown 2px solid;*/
+    margin: 0;
+    float: left;
+}
+.cpu-title{
+    /*border: red 1px solid;*/
+    font-size: 25px;
+    margin-top: 20px;
+    margin-left: 38%;
+}
+.memory-title{
+    /*border: red 1px solid;*/
+    font-size: 25px;
+    margin-top: 20px;
+    margin-left: 38%;
+}
+
+#cpu-charts{
+    width: 100%;
+    height: 240px;
+    /*border: white 1px solid;*/
+}
+
+
+.memory-usage{
+    width: 49%;
+    height: 300px;
+    /*border: brown 2px solid;*/
+    margin-left: 10px;
+    float: left;
+}
+.selects{
+    text-decoration:none;
+    font-size: 22px;
+}
+.pod-selects{
+    text-decoration:none;
+    font-size: 18px;
+}
+.ratio{
+    width: 75%;
+    height: 350px;
+    /*border: #3d3d3d 2px solid;*/
+    margin-left: 16%;
+}
