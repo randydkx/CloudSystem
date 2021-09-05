@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="<%=basePath%>/static/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="<%=basePath%>/static/css/style.css">
     <script src="<%=basePath%>/static/js/echarts.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
 <!--导航栏-->
@@ -40,10 +41,9 @@
 <div class="nodes-select" >
     <div class="node-title">Nodes选择</div>
     <div id="nodes-select">
-        <a href="load.jsp" class="selects">Master</a><br><br><br>
-        <a href="load.jsp" class="selects">node1</a><br><br><br>
-        <a href="load.jsp" class="selects">node2</a><br><br><br>
-        <a href="load.jsp" class="selects">node3</a><br><br><br>
+        <c:forEach items="${requestScope.nodeList}" var="node" varStatus="status">
+            <a href="<%=basePath%>/to/load.do" class="selects">${node.name}</a><br><br><br>
+        </c:forEach>
     </div>
 
 </div>
@@ -145,12 +145,14 @@
         charts9()
         function charts1() {
             var mCharts = echarts.init(document.getElementById('node-cpu-use'), 'macarons');
-            var xDataArr = ['7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
-                '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
-                '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11']
-            var yDataArr = [0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
-                0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
-                0.45, 0.86, 0.42, 0.74, 0.75, 0.62]
+            // var xDataArr = ['7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
+            //     '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
+            //     '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11']
+            // var yDataArr = [0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
+            //     0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
+            //     0.45, 0.86, 0.42, 0.74, 0.75, 0.62]
+            var xDataArr = [];
+            var yDataArr = [];
             var option = {
                 xAxis: {
                     type: 'category',
@@ -199,7 +201,6 @@
                                 global: false // 缺省为 false
                             }
                         }
-
                     }
                 ]
             }
@@ -207,11 +208,13 @@
         }
         function charts2() {
             var mCharts = echarts.init(document.getElementById('node-memory-use'), 'macarons');
-            var xDataArr = ['7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
-                '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11']
-            var yDataArr = [ 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
-                0.45, 0.86, 0.42, 0.74, 0.75, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
-                0.45, 0.86, 0.42, 0.74, 0.75, 0.62]
+            // var xDataArr = ['7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
+            //     '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11']
+            // var yDataArr = [ 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
+            //     0.45, 0.86, 0.42, 0.74, 0.75, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
+            //     0.45, 0.86, 0.42, 0.74, 0.75, 0.62]
+            var xDataArr = [];
+            var yDataArr = [];
             var option = {
                 xAxis: {
                     type: 'category',
@@ -270,8 +273,10 @@
         function charts3() {
             var mCharts = echarts.init(document.getElementById('disk-throught'),'macarons');
             //var mCharts = echarts.init(document.querySelector('cpu-charts'))
-            var xDataArr = ['7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11']
-            var yDataArr = [0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62]
+            // var xDataArr = ['7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11']
+            // var yDataArr = [0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62]
+            var xDataArr = [];
+            var yDataArr = [];
             var option = {
                 xAxis: {
                     type: 'category',
@@ -327,8 +332,10 @@
         function charts4() {
             var mCharts = echarts.init(document.getElementById('disk-iop'),'macarons');
             //var mCharts = echarts.init(document.querySelector('cpu-charts'))
-            var xDataArr = ['7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11']
-            var yDataArr = [0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62]
+            // var xDataArr = ['7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11']
+            // var yDataArr = [0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62]
+            var xDataArr = [];
+            var yDataArr = [];
             var option = {
                 xAxis: {
                     type: 'category',
@@ -503,12 +510,14 @@
         }
         function charts8() {
             var mCharts = echarts.init(document.getElementById('node-cpu-ratio'), 'macarons');
-            var xDataArr = ['7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
-                '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
-                '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11']
-            var yDataArr = [0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
-                0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
-                0.45, 0.86, 0.42, 0.74, 0.75, 0.62]
+            // var xDataArr = ['7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
+            //     '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
+            //     '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11']
+            // var yDataArr = [0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
+            //     0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
+            //     0.45, 0.86, 0.42, 0.74, 0.75, 0.62]
+            var xDataArr = [];
+            var yDataArr = [];
             var option = {
                 xAxis: {
                     type: 'category',
@@ -565,11 +574,13 @@
         }
         function charts9() {
             var mCharts = echarts.init(document.getElementById('node-memory-ratio'), 'macarons');
-            var xDataArr = ['7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
-                '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11']
-            var yDataArr = [ 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
-                0.45, 0.86, 0.42, 0.74, 0.75, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
-                0.45, 0.86, 0.42, 0.74, 0.75, 0.62]
+            // var xDataArr = ['7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
+            //     '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11']
+            // var yDataArr = [ 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
+            //     0.45, 0.86, 0.42, 0.74, 0.75, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
+            //     0.45, 0.86, 0.42, 0.74, 0.75, 0.62]
+            var xDataArr = [];
+            var yDataArr = [];
             var option = {
                 xAxis: {
                     type: 'category',
@@ -619,13 +630,379 @@
                                 global: false // 缺省为 false
                             }
                         }
-
                     }
                 ]
             }
             mCharts.setOption(option)
         }
     }
+
+    function ajax_update_all() {
+        $.ajax({
+            type:"GET",
+            dataType:"json",
+            url: '<%=basePath%>/global/nodeInfoUpdate.do',
+            async:true,
+            contentType: 'application/json;charset=utf-8',
+            success:function(data){
+                var obj = eval(data);
+                // var nodeInfo = obj['nodeInfo'];
+                // var time = obj['time'];
+                let chart1 = echarts.init(document.getElementById('node-cpu-use'),'macarons');
+                let chart2 = echarts.init(document.getElementById('node-memory-use'), 'macarons');
+                var chart1x = obj['chart1x'];
+                var chart1y = obj['chart1y'];
+                var chart2x = obj['chart2x'];
+                var chart2y = obj['chart2y'];
+                var chart3x = obj['chart3x'];
+                var chart3y = obj['chart3y'];
+                var chart4x = obj['chart4x'];
+                var chart4y = obj['chart4y'];
+                var chart8x = obj['chart8x'];
+                var chart8y = obj['chart8y'];
+                var chart9x = obj['chart9x'];
+                var chart9y = obj['chart9y'];
+
+                //图表1 CPU使用量的修改
+                var option1 = {
+                    xAxis: {
+                        type: 'category',
+                        data: chart1x,
+                        boundaryGap: false
+                    },
+                    yAxis: {
+                        type: 'value',
+                        //scale: true
+                    },
+                    grid: {
+                        left: '6%',
+                        top: '5%',
+                        bottom: '8%',
+                        right: '2%',
+                        // containLabel: true
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    series: [
+                        {
+                            symbol: "none",
+                            name: '用量',
+                            data: chart1y,
+                            type: 'line',
+                            smooth: true,
+                            lineStyle: {
+                                color: '#5ab1ef',
+                                // color:'white',
+                                type: 'solid'
+                            },
+                            areaStyle: {
+                                // color: 	'#ffdead'
+                                color: {
+                                    type: 'linear',
+                                    x: 0,
+                                    y: 0,
+                                    x2: 0,
+                                    y2: 1,
+                                    colorStops: [{
+                                        offset: 0, color: '#5ab1ef'// 0% 处的颜色
+                                    }, {
+                                        offset: 1, color: '#7b68ee' // 100% 处的颜色
+                                    }],
+                                    global: false // 缺省为 false
+                                }
+                            }
+                        }
+                    ]
+                };
+                chart1.setOption(option1);
+
+
+            //    图表2MEMERY使用量的修改
+                var option2 = {
+                    xAxis: {
+                        type: 'category',
+                        data: chart2x,
+                        boundaryGap: false
+                    },
+                    yAxis: {
+                        type: 'value',
+                        //scale: true
+                    },
+                    grid: {
+                        left: '6%',
+                        top: '5%',
+                        bottom: '8%',
+                        right: '2%',
+                        // containLabel: true
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    smooth:false,
+                    series: [
+                        {
+                            symbol: "none",
+                            name: '占比',
+                            data: chart2y,
+                            type: 'line',
+                            smooth: true,
+                            lineStyle: {
+                                color: '#5ab1ef',
+                                // color:'white',
+                                type: 'solid'
+                            },
+                            areaStyle: {
+                                // color: 	'#ffdead'
+                                color: {
+                                    type: 'linear',
+                                    x: 0,
+                                    y: 0,
+                                    x2: 0,
+                                    y2: 1,
+                                    colorStops: [{
+                                        offset: 0, color: '#5ab1ef'// 0% 处的颜色
+                                    }, {
+                                        offset: 1, color: '#7b68ee' // 100% 处的颜色
+                                    }],
+                                    global: false // 缺省为 false
+                                }
+                            }
+
+                        }
+                    ]
+                };
+                chart2.setOption(option2);
+
+            //    图表3：磁盘利用率
+                var disk_through = echarts.init(document.getElementById('disk-throught'),'macarons');
+                var option8 = {
+                    xAxis: {
+                        type: 'category',
+                        data: chart8x,
+                        boundaryGap: false
+                    },
+                    yAxis: {
+                        type: 'value',
+                        //scale: true
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    grid: {
+                        left: '6%',
+                        top: '5%',
+                        bottom: '8%',
+                        right: '2%',
+                        // containLabel: true
+                    },
+                    series: [
+                        {
+                            symbol:'none',
+                            name: '占比',
+                            data: chart8y,
+                            type: 'line',
+                            smooth: true,
+                            lineStyle: {
+                                color: '#f4a460',
+                                type: 'solid'//虚线
+                            },
+                            areaStyle: {
+                                // color: 	'#ffdead'
+                                color: {
+                                    type: 'linear',
+                                    x: 0,
+                                    y: 0,
+                                    x2: 0,
+                                    y2: 1,
+                                    colorStops: [{
+                                        offset: 0, color: '#ffdead'// 0% 处的颜色
+                                    }, {
+                                        offset: 1, color: '#f4a460' // 100% 处的颜色
+                                    }],
+                                    global: false // 缺省为 false
+                                }
+                            }
+                        }
+                    ]
+                };
+                disk_through.setOption(option8);
+
+                // 9
+                var disk_iop = echarts.init(document.getElementById('disk-iop'),'macarons');
+                var option9 = {
+                    xAxis: {
+                        type: 'category',
+                        data: chart9x,
+                        boundaryGap: false
+                    },
+                    yAxis: {
+                        type: 'value',
+                        //scale: true
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    grid: {
+                        left: '6%',
+                        top: '5%',
+                        bottom: '8%',
+                        right: '2%',
+                        // containLabel: true
+                    },
+                    series: [
+                        {
+                            symbol:'none',
+                            name: '占比',
+                            data: chart9y,
+                            type: 'line',
+                            smooth: true,
+                            lineStyle: {
+                                color: '#f4a460',
+                                type: 'solid'//虚线
+                            },
+                            areaStyle: {
+                                // color: 	'#ffdead'
+                                color: {
+                                    type: 'linear',
+                                    x: 0,
+                                    y: 0,
+                                    x2: 0,
+                                    y2: 1,
+                                    colorStops: [{
+                                        offset: 0, color: '#ffdead'// 0% 处的颜色
+                                    }, {
+                                        offset: 1, color: '#f4a460' // 100% 处的颜色
+                                    }],
+                                    global: false // 缺省为 false
+                                }
+                            }
+                        }
+                    ]
+                };
+                disk_iop.setOption(option9);
+
+            //    图8 Disk利用量
+                var chart3 = echarts.init(document.getElementById('node-cpu-ratio'), 'macarons');
+                var option3 = {
+                    xAxis: {
+                        type: 'category',
+                        data: chart3x,
+                        boundaryGap: false
+                    },
+                    yAxis: {
+                        type: 'value',
+                        //scale: true
+                    },
+                    grid: {
+                        left: '6%',
+                        top: '5%',
+                        bottom: '8%',
+                        right: '2%',
+                        // containLabel: true
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    series: [
+                        {
+                            symbol: "none",
+                            name: '占比',
+                            data: chart3y,
+                            type: 'line',
+                            smooth: true,
+                            lineStyle: {
+                                color: '#faebd7',
+                                // color:'white',
+                                type: 'solid'
+                            },
+                            areaStyle: {
+                                // color: 	'#ffdead'
+                                color: {
+                                    type: 'linear',
+                                    x: 0,
+                                    y: 0,
+                                    x2: 0,
+                                    y2: 1,
+                                    colorStops: [{
+                                        offset: 0, color: '#fff5ee'// 0% 处的颜色
+                                    }, {
+                                        offset: 1, color: '#faebd7' // 100% 处的颜色
+                                    }],
+                                    global: false // 缺省为 false
+                                }
+                            }
+
+                        }
+                    ]
+                };
+                chart3.setOption(option3);
+
+            //    图9：Disk利用率
+                var chart4 = echarts.init(document.getElementById('node-memory-ratio'), 'macarons');
+                var option4 = {
+                    xAxis: {
+                        type: 'category',
+                        data: chart4x,
+                        boundaryGap: false
+                    },
+                    yAxis: {
+                        type: 'value',
+                        //scale: true
+                    },
+                    grid: {
+                        left: '6%',
+                        top: '5%',
+                        bottom: '8%',
+                        right: '2%',
+                        // containLabel: true
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    smooth:false,
+                    series: [
+                        {
+                            symbol: "none",
+                            name: '占比',
+                            data: chart4y,
+                            type: 'line',
+                            smooth: true,
+                            lineStyle: {
+                                color: '#faebd7',
+                                // color:'white',
+                                type: 'solid'
+                            },
+                            areaStyle: {
+                                // color: 	'#ffdead'
+                                color: {
+                                    type: 'linear',
+                                    x: 0,
+                                    y: 0,
+                                    x2: 0,
+                                    y2: 1,
+                                    colorStops: [{
+                                        offset: 0, color: '#fff5ee'// 0% 处的颜色
+                                    }, {
+                                        offset: 1, color: '#faebd7' // 100% 处的颜色
+                                    }],
+                                    global: false // 缺省为 false
+                                }
+                            }
+                        }
+                    ]
+                };
+                chart4.setOption(option4);
+
+
+            }
+        });
+    }
+
+    $(function(){
+        setInterval(ajax_update_all,5000);
+    })
+
 
 </script>
 </html>

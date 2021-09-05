@@ -14,6 +14,7 @@
     <link rel="stylesheet" type="text/css" href="<%=basePath%>/static/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="<%=basePath%>/static/css/style.css">
     <script src="<%=basePath%>/static/js/echarts.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
 <!--导航栏-->

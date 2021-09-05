@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="cn.edu.njust.entity.*" %>
 <html>
 <head>
     <%
@@ -16,6 +17,7 @@
     <script src="<%=basePath%>/static/js/chalk.js"></script>
     <script src="<%=basePath%>/static/js/echarts.min.js"></script>
     <script src="<%=basePath%>/static/js/macarons.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
     <!--    <script src="js/dark.js"></script>-->
 </head>
 <body>
@@ -80,57 +82,29 @@
                     <th>角色</th>
                     <th>CPU占用率</th>
                     <th>内存占用率</th>
-                    <th>Pods使用率</th>
+<%--                    <th>Pods使用率</th>--%>
                     <th>内核</th>
                     <th>状态</th>
                     <th>查看</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>master</td>
-                    <td>192.168.1.1</td>
-                    <td>master</td>
-                    <td>12%</td>
-                    <td>30%</td>
-                    <td>30%</td>
-                    <td>2</td>
-                    <td><span class="label label-success">运行</span></td>
-                    <td><a href="<%=basePath%>/to/load.do" class="btn btn-xs">View</a></td>
-                </tr>
-<%--                <tr>--%>
-<%--                    <td>Node1</td>--%>
-<%--                    <td>192.168.1.1</td>--%>
-<%--                    <td>node</td>--%>
-<%--                    <td>12%</td>--%>
-<%--                    <td>30%</td>--%>
-<%--                    <td>30%</td>--%>
-<%--                    <td>2</td>--%>
-<%--                    <td><span class="label label-warning">挂起</span></td>--%>
-<%--                    <td><a href="nodes.jsp" class="btn btn-xs">View</a></td>--%>
-<%--                </tr>--%>
-<%--                <tr>--%>
-<%--                    <td>Node2</td>--%>
-<%--                    <td>192.168.1.1</td>--%>
-<%--                    <td>node</td>--%>
-<%--                    <td>12%</td>--%>
-<%--                    <td>30%</td>--%>
-<%--                    <td>30%</td>--%>
-<%--                    <td>2</td>--%>
-<%--                    <td><span class="label label-success">运行</span></td>--%>
-<%--                    <td><a href="nodes.jsp" class="btn btn-xs">View</a></td>--%>
-<%--                </tr>--%>
-<%--                <tr>--%>
-<%--                    <td>Node3</td>--%>
-<%--                    <td>192.168.1.1</td>--%>
-<%--                    <td>node</td>--%>
-<%--                    <td>12%</td>--%>
-<%--                    <td>30%</td>--%>
-<%--                    <td>30%</td>--%>
-<%--                    <td>2</td>--%>
-<%--                    <td><span class="label label-danger">关闭</span></td>--%>
-<%--                    <td><a href="nodes.jsp" class="btn btn-xs">View</a></td>--%>
-<%--                </tr>--%>
+                <c:if test="${not empty requestScope.nodeList}">
+                    <c:forEach varStatus="status" items="${requestScope.nodeList}" var="node">
+                        <tr>
+                            <td>${node.name}</td>
+                            <td>${node.address}</td>
+                            <td>${node.role}</td>
+                            <td>${node.usage.CPURatio}</td>
+                            <td>${node.usage.memoryRatio}</td>
+                            <td>${node.coreNum}</td>
+                            <td><span class="label label-success">运行</span></td>
+<%--                            <td><span class="label label-danger">关闭</span></td>&ndash;%&gt;--%>
+<%--                            <td><span class="label label-warning">挂起</span></td>&ndash;%&gt;--%>
+                            <td><a href="<%=basePath%>/to/load.do" class="btn btn-xs">View</a></td>
+                        </tr>
+                    </c:forEach>
+                </c:if>
                 </tbody>
             </table>
         </div>
@@ -201,7 +175,7 @@
 
                     }
                 ]
-            }
+            };
             mCharts.setOption(option)
         }
 
@@ -267,7 +241,135 @@
             }
             mCharts.setOption(option)
         }
+    };
+
+    function Ajax_get_CPU_MEM(){
+        $.ajax({
+            type:"GET",
+            dataType:"json",
+            url: '<%=basePath%>/global/clusterCPUMEMUpdate.do',
+            async:true,
+            contentType: 'application/json;charset=utf-8',
+            success:function(data){
+                var obj = eval(data);
+                //渲染折线图
+                var cpuRatio = echarts.init(document.getElementById('cpu-charts'), 'macarons');
+                var option1 = {
+                    xAxis: {
+                        type: 'category',
+                        data: obj['totalCPUListx'],
+                        boundaryGap: false
+                    },
+                    yAxis: {
+                        type: 'value',
+                        //scale: true
+                    },
+                    grid: {
+                        left: '5%',
+                        top: '5%',
+                        bottom: '8%',
+                        right: '2%',
+                        // containLabel: true
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    series: [
+                        {
+                            symbol: "none",
+                            name: '占比',
+                            data: obj['totalCPUListy'],
+                            type: 'line',
+                            smooth: true,
+                            lineStyle: {
+                                color: '#5ab1ef',
+                                // color:'white',
+                                type: 'solid'
+                            },
+                            areaStyle: {
+                                // color: 	'#ffdead'
+                                color: {
+                                    type: 'linear',
+                                    x: 0,
+                                    y: 0,
+                                    x2: 0,
+                                    y2: 1,
+                                    colorStops: [{
+                                        offset: 0, color: '#5ab1ef'// 0% 处的颜色
+                                    }, {
+                                        offset: 1, color: '#7b68ee' // 100% 处的颜色
+                                    }],
+                                    global: false // 缺省为 false
+                                }
+                            }
+
+                        }
+                    ]
+                };
+                cpuRatio.setOption(option1);
+
+                var chart_mem = echarts.init(document.getElementById('memory-charts'), 'macarons');
+                var option2 = {
+                    xAxis: {
+                        type: 'category',
+                        data: obj['totalMEMListx'],
+                        boundaryGap: false
+                    },
+                    yAxis: {
+                        type: 'value',
+                        //scale: true
+                    },
+                    grid: {
+                        left: '5%',
+                        top: '5%',
+                        bottom: '8%',
+                        right: '2%',
+                        // containLabel: true
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    series: [
+                        {
+                            symbol: "none",
+                            name: '占比',
+                            data: obj['totalMEMListy'],
+                            type: 'line',
+                            smooth: true,
+                            lineStyle: {
+                                color: '#5ab1ef',
+                                // color:'white',
+                                type: 'solid'
+                            },
+                            areaStyle: {
+                                // color: 	'#ffdead'
+                                color: {
+                                    type: 'linear',
+                                    x: 0,
+                                    y: 0,
+                                    x2: 0,
+                                    y2: 1,
+                                    colorStops: [{
+                                        offset: 0, color: '#5ab1ef'// 0% 处的颜色
+                                    }, {
+                                        offset: 1, color: '#7b68ee'  // 100% 处的颜色
+                                    }],
+                                    global: false // 缺省为 false
+                                }
+                            }
+
+                        }
+                    ]
+                };
+                chart_mem.setOption(option2);
+            }
+        });
     }
+
+    //设置ajax轮询
+    $(function(){
+        setInterval(Ajax_get_CPU_MEM,5000);
+    })
 
 </script>
 </html>

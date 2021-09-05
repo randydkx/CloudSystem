@@ -6,7 +6,9 @@ import com.google.common.collect.BoundType;
 import org.apache.commons.io.filefilter.FalseFileFilter;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -27,6 +29,7 @@ public class MainUtils {
     public static String MASTER_NAME = "kube-1";
     public static String NODE_ONE_NAME = "node-1";
     public static String NODE_TWO_NAME = "node-2";
+    public static String KUBE_CONFIG_PATH = "C:\\config";
 
 
     public static String PORT = "22";
@@ -34,6 +37,12 @@ public class MainUtils {
 //    限制double数据小数点后尾位数，四舍五入法则
     public static double limitPrecision(Double value,int precision){
         return  new BigDecimal(value).setScale(precision, BigDecimal.ROUND_HALF_UP).doubleValue();
+    }
+
+    public static String getCurrentHMSTime(){
+        Calendar cal = Calendar.getInstance();
+        java.text.SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        return sdf.format(cal.getTime());
     }
 
 //    public static void main(String[] args) {

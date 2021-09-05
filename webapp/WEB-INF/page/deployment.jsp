@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="<%=basePath%>/static/css/overview.css">
     <link rel="stylesheet" type="text/css" href="<%=basePath%>/static/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="<%=basePath%>/static/css/style.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
     <script src="<%=basePath%>/static/js/echarts.min.js"></script>
 </head>
 <body>
@@ -82,7 +83,7 @@
         </div>
         <div style="height: 20px"></div>
         <div style="width: 90%;margin-left: 5%">
-            <table class="table table-bordered table-advance table-hover">
+            <table class="table table-bordered table-advance table-hover" id="requestTable">
                 <thead style="border: black">
                 <tr>
                     <th>Request ID</th>
@@ -94,54 +95,9 @@
                     <th>查看</th>
                 </tr>
                 </thead>
-                <tbody>
-                <tr>
-                    <td>b2ebadb2e3b2b23b21</td>
-                    <td>192.168.1.1</td>
-                    <td>10.122.1.26:8080</td>
-                    <td>08/Aug/2021:07:17:46+000</td>
-                    <td>200</td>
-                    <td>2</td>
-                    <td><a href="<%=basePath%>/to/deployment.do" class="btn btn-xs">View</a></td>
-                </tr>
-<%--                <tr>--%>
-<%--                    <td>b2ebadb2e3b2b23b21</td>--%>
-<%--                    <td>192.168.1.1</td>--%>
-<%--                    <td>10.122.1.26:8080</td>--%>
-<%--                    <td>08/Aug/2021:07:17:46+000</td>--%>
-<%--                    <td>200</td>--%>
-<%--                    <td>2</td>--%>
-<%--                    <td><a href="deployment.jsp" class="btn btn-xs">View</a></td>--%>
-<%--                </tr>--%>
-<%--                <tr>--%>
-<%--                    <td>b2ebadb2e3b2b23b21</td>--%>
-<%--                    <td>192.168.1.1</td>--%>
-<%--                    <td>10.122.1.26:8080</td>--%>
-<%--                    <td>08/Aug/2021:07:17:46+000</td>--%>
-<%--                    <td>200</td>--%>
-<%--                    <td>2</td>--%>
-<%--                    <td><a href="deployment.jsp" class="btn btn-xs">View</a></td>--%>
-<%--                </tr>--%>
-<%--                <tr>--%>
-<%--                    <td>b2ebadb2e3b2b23b21</td>--%>
-<%--                    <td>192.168.1.1</td>--%>
-<%--                    <td>10.122.1.26:8080</td>--%>
-<%--                    <td>08/Aug/2021:07:17:46+000</td>--%>
-<%--                    <td>200</td>--%>
-<%--                    <td>2</td>--%>
-<%--                    <td><a href="deployment.jsp" class="btn btn-xs">View</a></td>--%>
-<%--                </tr>--%>
-<%--                <tr>--%>
-<%--                    <td>b2ebadb2e3b2b23b21</td>--%>
-<%--                    <td>192.168.1.1</td>--%>
-<%--                    <td>10.122.1.26:8080</td>--%>
-<%--                    <td>08/Aug/2021:07:17:46+000</td>--%>
-<%--                    <td>200</td>--%>
-<%--                    <td>2</td>--%>
-<%--                    <td><a href="load.jsp" class="btn btn-xs">View</a></td>--%>
-<%--                </tr>--%>
-                </tbody>
+                <tbody> </tbody>
             </table>
+
         </div>
     </div>
 </div>
@@ -149,17 +105,20 @@
 
 </body>
 <script>
+    var mCharts;
     window.onload = function () {
         charts1()
 
         function charts1() {
-            var mCharts = echarts.init(document.getElementById('responseTime'), 'macarons');
-            var xDataArr = ['7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
-                '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
-                '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11']
-            var yDataArr = [0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
-                0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
-                0.45, 0.86, 0.42, 0.74, 0.75, 0.62]
+            mCharts = echarts.init(document.getElementById('responseTime'), 'macarons');
+            // var xDataArr = ['7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
+            //     '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
+            //     '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11']
+            // var yDataArr = [0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
+            //     0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
+            //     0.45, 0.86, 0.42, 0.74, 0.75, 0.62]
+            var xDataArr = [];
+            var yDataArr = [];
             var option = {
                 xAxis: {
                     type: 'category',
@@ -183,7 +142,7 @@
                 series: [
                     {
                         symbol: "none",
-                        name: '占比',
+                        name: '时间(s)',
                         data: yDataArr,
                         type: 'line',
                         smooth: true,
@@ -216,6 +175,107 @@
         }
 
     }
+
+    function Ajax_get_request_table(){
+        $.ajax({
+            type:"GET",
+            dataType:"json",
+            url: '<%=basePath%>/global/requestList.do',
+            async:true,
+            contentType: 'application/json;charset=utf-8',
+            success:function(data){
+                var requestList=eval(data)['requestList'];
+                var responseTimeList = eval(data)['responseTimeList'];
+                var tbody=$('<tbody></tbody>');
+                $(requestList).each(function (index){
+                    var val=requestList[index];
+                    var tr=$('<tr></tr>');
+                    tr.append(
+                        '<td>'+ val.reqID + '</td>' +
+                        '<td>'+ val.requestFromAddr + '</td>' +
+                        '<td>'+ val.requestToAddr + '</td>' +
+                        '<td>'+ val.requestTime + '</td>'+
+                        // '<td>'+ val.response.responseTime + '</td>'+
+                        '<td>'+ val.response.status + '</td>'+
+                        '<td>'+ val.bodySendLength + '</td>' +
+                        '<td><a href=\"<%=basePath%>/to/deployment.do\" class=\"btn btn-xs\">View</a></td>'
+                    );
+                    tbody.append(tr);
+                });
+                $('#requestTable tbody').replaceWith(tbody);
+
+
+                //渲染折线图
+                let mCharts = echarts.init(document.getElementById('responseTime'),'macarons');
+                var x = [];
+                var y = [];
+                if (responseTimeList) {
+                    for(var i=0;i<responseTimeList.length;i++){
+                        x.push(i);
+                        y.push(responseTimeList[i]);
+                    }
+                    var option = {
+                        xAxis: {
+                            type: 'category',
+                            data: x,
+                            boundaryGap: false
+                        },
+                        yAxis: {
+                            type: 'value',
+                            //scale: true
+                        },
+                        grid: {
+                            left: '6%',
+                            top: '5%',
+                            bottom: '8%',
+                            right: '2%',
+                            // containLabel: true
+                        },
+                        tooltip: {
+                            trigger: 'axis'
+                        },
+                        series: [
+                            {
+                                symbol: "none",
+                                name: '时间(s)',
+                                data: y,
+                                type: 'line',
+                                smooth: true,
+                                lineStyle: {
+                                    color: '#20b2aa',
+                                    // color:'white',
+                                    type: 'solid'
+                                },
+                                areaStyle: {
+                                    // color: 	'#ffdead'
+                                    color: {
+                                        type: 'linear',
+                                        x: 0,
+                                        y: 0,
+                                        x2: 0,
+                                        y2: 1,
+                                        colorStops: [{
+                                            offset: 0, color: '#66cdaa'// 0% 处的颜色
+                                        }, {
+                                            offset: 1, color: '#20b2aa' // 100% 处的颜色
+                                        }],
+                                        global: false // 缺省为 false
+                                    }
+                                }
+
+                            }
+                        ]
+                    }
+                    mCharts.setOption(option)
+                }
+            }
+        });
+    }
+
+    //设置ajax轮询
+    $(function(){
+        setInterval(Ajax_get_request_table,3000);
+    })
 
 </script>
 </html>

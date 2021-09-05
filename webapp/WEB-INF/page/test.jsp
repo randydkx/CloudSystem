@@ -69,51 +69,6 @@
     }
 
 
-    // var echartsA = echarts.init(document.getElementById('lineChart'));
-    // echartsA.setOption({
-    //
-    //     title: {
-    //         text: 'test'
-    //     },
-    //
-    //     tooltip: {
-    //         trigger: 'axis',
-    //     },
-    //     legend: {
-    //         data: ['xx值']
-    //     },
-    //     grid: {
-    //         left: '3%',
-    //         right: '4%',
-    //         bottom: '3%',
-    //         containLabel: true
-    //     },
-    //     xAxis: [{
-    //         type: 'category',
-    //         boundaryGap: true,
-    //         data: []
-    //     }],
-    //
-    //     yAxis: [{
-    //         type: 'value'
-    //     }],
-    //     series: [{
-    //         name: 'data1',
-    //         type: 'line',
-    //         areaStyle: {normal: {}},
-    //         data: [],
-    //         itemStyle: {
-    //             normal: {
-    //                 color: '#59aea2'
-    //             },
-    //             emphasis: {}
-    //         }
-    //     }
-    //     ]
-    // });
-    // echartsA.showLoading();
-
-
 
     function updateLineQuery(){
         var x = [];

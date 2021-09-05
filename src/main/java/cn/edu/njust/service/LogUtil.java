@@ -33,7 +33,7 @@ public class LogUtil{
 
         CoreV1Api coreApi = Connect2System.getAPI();
 
-        Connect2System.client.setReadTimeout(200);
+        Connect2System.client.setReadTimeout(5000);
 
         PodLogs logs = new PodLogs();
         V1Pod pod=null;
