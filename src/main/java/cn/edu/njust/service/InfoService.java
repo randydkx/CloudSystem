@@ -3,6 +3,7 @@ package cn.edu.njust.service;
 import cn.edu.njust.entity.*;
 import cn.edu.njust.utils.linuxshell.LinuxDataBase;
 import cn.edu.njust.utils.linuxshell.LinuxShellUtil;
+import com.sun.org.apache.xpath.internal.objects.XObject;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.kubernetes.client.custom.V1Patch;
 import io.kubernetes.client.openapi.ApiClient;
@@ -22,6 +23,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import cn.edu.njust.utils.*;
 
 import javax.activation.MailcapCommandMap;
@@ -56,6 +59,7 @@ public class InfoService {
      * @return
      */
     public static HashMap<Object,Object> getUsageByPodName(String podName, String result){
+//        if(result == null || result.length() == 0)return null;
 
         String[] resultLine = result.split("\n");
         Usage usage = new Usage();
@@ -138,8 +142,9 @@ public class InfoService {
      * @return List<PodInfo> pod相关数据的list
      * @throws ApiException api调用异常
      */
-    public List<PodInfo> getPodInfo() throws ApiException {
-        List<PodInfo> res=new ArrayList<PodInfo>();
+    public Map<Object,Object> getPodInfo() throws ApiException {
+        Map<Object,Object> res = new HashMap<Object, Object>();
+        List<PodInfo> totalPodList = new ArrayList<>();
         PodInfo pod;
 //        获取node所有pod相关的信息
         LinuxDataBase masterDataBase=new LinuxDataBase(MainUtils.USERNAME,MainUtils.PASSWORD,
@@ -150,9 +155,16 @@ public class InfoService {
         String result1 = (String) linux.getData(masterDataBase,"kubectl describe node " + MainUtils.MASTER_NAME).get("return");
         String result2 = (String) linux.getData(masterDataBase,"kubectl describe node " + MainUtils.NODE_ONE_NAME).get("return");
 //        获取node-2的pod信息，当前未开node-2
-//        String result3 = (String) linux.getData(masterDataBase,"kubectl describe node " + MainUtils.NODE_TWO_NAME).get("return");
+        String result3 = null;
+        if (MainUtils.CONTAIN_3_NODES){
+            result3 = (String) linux.getData(masterDataBase,"kubectl describe node " + MainUtils.NODE_TWO_NAME).get("return");
+        }
 
         V1PodList list = api.listPodForAllNamespaces(null, null, null, null, null, null, null, null, null);
+
+        List<PodInfo> forNode1 = new ArrayList<>();
+        List<PodInfo> forNode2 = new ArrayList<>();
+        List<PodInfo> forNode3 = new ArrayList<>();
 
         for (V1Pod item : list.getItems()) {
             String podName=item.getMetadata().getName();
@@ -160,7 +172,9 @@ public class InfoService {
             String podStatus=item.getStatus().getPhase();
 
             List<V1PodCondition> conditions = item.getStatus().getConditions();
-            String podAge=conditions.get(conditions.size()-1).getLastTransitionTime().toString();
+            if(conditions == null)continue;
+            String podAge=conditions.get(0).getLastTransitionTime().toString();
+//            String podAge=conditions.get(conditions.size()-1).getLastTransitionTime().toString();
             List<V1ContainerStatus> containerStatuses = item.getStatus().getContainerStatuses();
             String containerName="null";
             if(containerStatuses!=null)
@@ -171,26 +185,35 @@ public class InfoService {
             if((Boolean) map.get("hasPod")){
                 pod.setUsage((Usage)map.get("usage"));
                 pod.setAge((String)map.get("age"));
+                forNode1.add(pod);
             }else{
                 map = getUsageByPodName(podName,result2);
                 if((Boolean)map.get("hasPod")){
                     pod.setUsage((Usage)map.get("usage"));
                     pod.setAge((String)map.get("age"));
+                    forNode2.add(pod);
                 }else{
-//                    map = getUsageByPodName(podName,result3);
-//                    if((Boolean)map.get("hasPod")){
-//                        System.out.println("node2");
-//                        pod.setUsage((Usage)map.get("usage"));
-//                        pod.setAge((String)map.get("age"));
-//                    }
+//                    包含第三个节点的时候对第三个节点中的pod的Usage进行获取
+                    if(MainUtils.CONTAIN_3_NODES){
+                        map = getUsageByPodName(podName,result3);
+                        if((Boolean)map.get("hasPod")){
+                            pod.setUsage((Usage)map.get("usage"));
+                            pod.setAge((String)map.get("age"));
+                            forNode3.add(pod);
+                        }
+                    }
                 }
             }
 
-            res.add(pod);
+            totalPodList.add(pod);
+
         }
+        res.put("totalPodList",totalPodList);
+        res.put("forNode1",forNode1);
+        res.put("forNode2",forNode2);
+        res.put("forNode3",forNode3);
         return res;
     }
-
     /**
      * 获取所有命名空间的deployment
      * @return
@@ -249,6 +272,7 @@ public class InfoService {
         String result = (String) linux.getData(masterDataBase,"kubectl describe node " + nodeName).get("return");
 //        System.out.println(result);
         Usage usage = new Usage();
+        assert result != null ;
         String[] resultLine = result.split("\n");
         for(int i=0;i<resultLine.length;i++){
             String[] items = resultLine[i].trim().split("\\s+");
@@ -326,6 +350,16 @@ public class InfoService {
             nodeInfo=new NodeInfo(nodeAddress,nodeName);
 //            通过nodeName获取节点的CPU和内存用量
             HashMap<Object,Object> map = this.getNodeUsageByName(nodeInfo.getName());
+            if(map.containsKey("usage") == false){
+                nodeInfo.setUsage(new Usage());
+                nodeInfo.setCoreNum(0);
+                nodeInfo.setRole("node");
+                continue;
+            }
+            assert map.containsKey("usage");
+            assert map.containsKey("coreNum");
+            assert map.containsKey("role");
+
             nodeInfo.setUsage((Usage)map.get("usage"));
             nodeInfo.setCoreNum((int)map.get("coreNum"));
             nodeInfo.setRole((String)map.get("role"));

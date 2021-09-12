@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -22,8 +23,24 @@ public class InfoServiceTest {
         @Test
     public void testGetPodInfo() throws IOException, ApiException {
         InfoService infoService=new InfoService("C:\\config");
-        List<PodInfo> podInfos = infoService.getPodInfo();
+        Map<Object,Object> result = infoService.getPodInfo();
+        List<PodInfo> podInfos = (List<PodInfo>)result.get("totalPodList");
+        List<PodInfo> forNode1 = (List<PodInfo>)result.get("forNode1");
+        List<PodInfo> forNode2 = (List<PodInfo>)result.get("forNode2");
+        List<PodInfo> forNode3 = (List<PodInfo>)result.get("forNode3");
         for(PodInfo podInfo:podInfos){
+            System.out.println(podInfo);
+        }
+        System.out.println();
+        for(PodInfo podInfo: forNode1){
+            System.out.println(podInfo);
+        }
+        System.out.println();
+        for(PodInfo podInfo: forNode2){
+            System.out.println(podInfo);
+        }
+        System.out.println();
+        for(PodInfo podInfo: forNode3){
             System.out.println(podInfo);
         }
     }

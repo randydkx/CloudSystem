@@ -8,9 +8,12 @@ import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -31,6 +34,7 @@ public class ViewController {
      */
     @RequestMapping("/index")
     public String toIndexPage(Model model) throws ApiException{
+        model.addAttribute("CONTAIN_3_NODES",MainUtils.CONTAIN_3_NODES);
         List<NodeInfo> nodeList = infoService.getNodeInfo();
         model.addAttribute("nodeList",nodeList);
         model.addAttribute("defaultMaster",true);
@@ -53,20 +57,16 @@ public class ViewController {
      * @return
      */
     @RequestMapping("/nodes")
-    public String toNodesPage(Model model, HttpSession session) throws ApiException {
+    public String toNodesPage(Model model, HttpSession session, @RequestParam int nodeIndex) throws ApiException {
         List<NodeInfo> nodeList = infoService.getNodeInfo();
         String masterName = null;
-        for(NodeInfo nodeInfo : nodeList){
-            if(nodeInfo.getRole().equalsIgnoreCase("master")){
-                masterName = nodeInfo.getName();
-            }
-        }
         model.addAttribute("nodeList",nodeList);
-        String desiredName = (String)session.getAttribute("nodeName");
-        if(desiredName == null){
-            desiredName = masterName;
-        }
-        session.setAttribute("nodeName",desiredName);
+
+//        修改当前页面中正在访问的node对象
+        String desiredName = nodeList.get(nodeIndex).getName();
+
+        session.setAttribute("nodeIndex",nodeIndex);
+
         for(NodeInfo node : nodeList){
             if(node.getName().equals(desiredName)){
                 model.addAttribute("nodeInfo",node);

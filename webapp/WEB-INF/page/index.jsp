@@ -30,13 +30,18 @@
             <a href="<%=basePath%>/to/index.do" class="nav-text">概况</a>
         </li>
         <li class="li">
-            <a href="<%=basePath%>/to/nodes.do" class="nav-text">Nodes</a>
+            <c:if test="${not empty sessionScope.nodeIndex}">
+                <a href="<%=basePath%>/to/nodes.do?nodeIndex=${sessionScope.nodeIndex}" class="nav-text">Nodes</a>
+            </c:if>
+            <c:if test="${empty sessionScope.nodeIndex}">
+                <a href="<%=basePath%>/to/nodes.do?nodeIndex=0" class="nav-text">Nodes</a>
+            </c:if>
         </li>
         <li class="li">
             <a href="<%=basePath%>/to/load.do" class="nav-text">Pods</a>
         </li>
         <li class="li">
-            <a href="<%=basePath%>/to/deployment.do" class="nav-text">负载</a>
+            <a href="<%=basePath%>/to/deployment.do" class="nav-text">load</a>
         </li>
     </ul>
 </nav>
@@ -176,7 +181,8 @@
                     }
                 ]
             };
-            mCharts.setOption(option)
+            mCharts.setOption(option);
+            mCharts.showLoading();
         }
 
         function charts2() {
@@ -239,7 +245,8 @@
                     }
                 ]
             }
-            mCharts.setOption(option)
+            mCharts.setOption(option);
+            mCharts.showLoading();
         }
     };
 
@@ -307,6 +314,7 @@
                     ]
                 };
                 cpuRatio.setOption(option1);
+                cpuRatio.hideLoading();
 
                 var chart_mem = echarts.init(document.getElementById('memory-charts'), 'macarons');
                 var option2 = {
@@ -362,6 +370,7 @@
                     ]
                 };
                 chart_mem.setOption(option2);
+                chart_mem.hideLoading();
             }
         });
     }

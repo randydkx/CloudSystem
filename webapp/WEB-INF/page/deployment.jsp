@@ -26,13 +26,18 @@
             <a href="<%=basePath%>/to/index.do" class="nav-text">概况</a>
         </li>
         <li class="li">
-            <a href="<%=basePath%>/to/nodes.do" class="nav-text">Nodes</a>
+            <c:if test="${not empty sessionScope.nodeIndex}">
+                <a href="<%=basePath%>/to/nodes.do?nodeIndex=${sessionScope.nodeIndex}" class="nav-text">Nodes</a>
+            </c:if>
+            <c:if test="${empty sessionScope.nodeIndex}">
+                <a href="<%=basePath%>/to/nodes.do?nodeIndex=0" class="nav-text">Nodes</a>
+            </c:if>
         </li>
         <li class="li">
             <a href="<%=basePath%>/to/load.do" class="nav-text">Pods</a>
         </li>
         <li class="li">
-            <a href="<%=basePath%>/to/deployment.do" class="nav-text">负载</a>
+            <a href="<%=basePath%>/to/deployment.do" class="nav-text">load</a>
         </li>
     </ul>
 </nav>
@@ -79,19 +84,19 @@
 <div style="margin-left: 20%;width: 75%;">
     <div>
         <div class="deploy-title2">
-            负载详细信息
+            请求详细信息
         </div>
         <div style="height: 20px"></div>
         <div style="width: 90%;margin-left: 5%">
             <table class="table table-bordered table-advance table-hover" id="requestTable">
                 <thead style="border: black">
                 <tr>
-                    <th>Request ID</th>
-                    <th>From Addr</th>
-                    <th>To Addr</th>
-                    <th>Request Time</th>
-                    <th>Status</th>
-                    <th>Length</th>
+                    <th>请求ID</th>
+                    <th>发送IP</th>
+                    <th>接收IP</th>
+                    <th>请求时间</th>
+                    <th>请求状态</th>
+                    <th>报文长度</th>
                     <th>查看</th>
                 </tr>
                 </thead>
@@ -171,7 +176,8 @@
                     }
                 ]
             }
-            mCharts.setOption(option)
+            mCharts.setOption(option);
+            mCharts.showLoading();
         }
 
     }
@@ -195,7 +201,6 @@
                         '<td>'+ val.requestFromAddr + '</td>' +
                         '<td>'+ val.requestToAddr + '</td>' +
                         '<td>'+ val.requestTime + '</td>'+
-                        // '<td>'+ val.response.responseTime + '</td>'+
                         '<td>'+ val.response.status + '</td>'+
                         '<td>'+ val.bodySendLength + '</td>' +
                         '<td><a href=\"<%=basePath%>/to/deployment.do\" class=\"btn btn-xs\">View</a></td>'
@@ -265,8 +270,9 @@
 
                             }
                         ]
-                    }
-                    mCharts.setOption(option)
+                    };
+                    mCharts.setOption(option);
+                    mCharts.hideLoading();
                 }
             }
         });

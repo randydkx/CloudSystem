@@ -26,13 +26,18 @@
             <a href="<%=basePath%>/to/index.do" class="nav-text">概况</a>
         </li>
         <li class="li">
-            <a href="<%=basePath%>/to/nodes.do" class="nav-text">Nodes</a>
+            <c:if test="${not empty sessionScope.nodeIndex}">
+                <a href="<%=basePath%>/to/nodes.do?nodeIndex=${sessionScope.nodeIndex}" class="nav-text">Nodes</a>
+            </c:if>
+            <c:if test="${empty sessionScope.nodeIndex}">
+                <a href="<%=basePath%>/to/nodes.do?nodeIndex=0" class="nav-text">Nodes</a>
+            </c:if>
         </li>
         <li class="li">
             <a href="<%=basePath%>/to/load.do" class="nav-text">Pods</a>
         </li>
         <li class="li">
-            <a href="<%=basePath%>/to/deployment.do" class="nav-text">负载</a>
+            <a href="<%=basePath%>/to/deployment.do" class="nav-text">load</a>
         </li>
     </ul>
 </nav>
@@ -115,12 +120,15 @@
 </body>
 <script>
     window.onload = function () {
-        charts1()
-        charts2()
-        charts3()
+        charts1();
+        charts2();
+        charts3();
 
         function charts1() {
             var mCharts = echarts.init(document.getElementById('pod-cpu-use'), 'macarons');
+            //获取最近一次访问的节点的信息
+            <%--var xDataArr = ${sessionScope.chart1x};--%>
+            <%--var yDataArr = ${sessionScope.chart1y};--%>
             var xDataArr = ['7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
                 '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
                 '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11']
@@ -178,17 +186,18 @@
 
                     }
                 ]
-            }
-            mCharts.setOption(option)
+            };
+            mCharts.setOption(option);
+            mCharts.showLoading();
         }
         function charts2() {
             var mCharts = echarts.init(document.getElementById('pod-memory-use'), 'macarons');
             var xDataArr = ['7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
                 '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
-                '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11']
+                '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11'];
             var yDataArr = [0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
                 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
-                0.45, 0.86, 0.42, 0.74, 0.75, 0.62]
+                0.45, 0.86, 0.42, 0.74, 0.75, 0.62];
             var option = {
                 xAxis: {
                     type: 'category',
@@ -240,16 +249,16 @@
 
                     }
                 ]
-            }
-            mCharts.setOption(option)
+            };
+            mCharts.setOption(option);
+            mCharts.showLoading();
         }
         function charts3() {
             var mCharts = echarts.init(document.getElementById('container-status'),'macarons');
-            //var mCharts = echarts.init(document.querySelector('cpu-charts'))
-            var xDataArr = ['7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11']
-            var yDataArr1 = [0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62]
-            var yDataArr2 = [0.5, 0.7, 0.6, 0.2, 0.4, 0.6, 0.4, 0.6, 0.32, 0.8, 0.7, 0.6]
-            var yDataArr3 = [0.8, 0.4, 0.5, 0.3, 0.7, 0.4, 0.46, 0.86, 0.42, 0.74, 0.75, 0.62]
+            var xDataArr = ['7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11'];
+            var yDataArr1 = [0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62];
+            var yDataArr2 = [0.5, 0.7, 0.6, 0.2, 0.4, 0.6, 0.4, 0.6, 0.32, 0.8, 0.7, 0.6];
+            var yDataArr3 = [0.8, 0.4, 0.5, 0.3, 0.7, 0.4, 0.46, 0.86, 0.42, 0.74, 0.75, 0.62];
             var option = {
                 xAxis: {
                     type: 'category',
@@ -353,9 +362,10 @@
                         }
                     }
                 ]
-            }
+            };
 
-            mCharts.setOption(option)
+            mCharts.setOption(option);
+            mCharts.showLoading();
         }
     }
 

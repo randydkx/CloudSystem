@@ -27,13 +27,18 @@
             <a href="<%=basePath%>/to/index.do" class="nav-text">概况</a>
         </li>
         <li class="li">
-            <a href="<%=basePath%>/to/nodes.do" class="nav-text">Nodes</a>
+            <c:if test="${not empty sessionScope.nodeIndex}">
+                <a href="<%=basePath%>/to/nodes.do?nodeIndex=${sessionScope.nodeIndex}" class="nav-text">Nodes</a>
+            </c:if>
+            <c:if test="${empty sessionScope.nodeIndex}">
+                <a href="<%=basePath%>/to/nodes.do?nodeIndex=0" class="nav-text">Nodes</a>
+            </c:if>
         </li>
         <li class="li">
             <a href="<%=basePath%>/to/load.do" class="nav-text">Pods</a>
         </li>
         <li class="li">
-            <a href="<%=basePath%>/to/deployment.do" class="nav-text">负载</a>
+            <a href="<%=basePath%>/to/deployment.do" class="nav-text">load</a>
         </li>
     </ul>
 </nav>
@@ -42,7 +47,7 @@
     <div class="node-title">Nodes选择</div>
     <div id="nodes-select">
         <c:forEach items="${requestScope.nodeList}" var="node" varStatus="status">
-            <a href="<%=basePath%>/to/load.do" class="selects">${node.name}</a><br><br><br>
+            <a href="<%=basePath%>/to/nodes.do?nodeIndex=${status.index}" class="selects">${node.name}</a><br><br><br>
         </c:forEach>
     </div>
 
@@ -134,25 +139,23 @@
 </body>
 <script>
     window.onload = function () {
-        charts1()
-        charts2()
-        charts3()
-        charts4()
-        charts5()
-        charts6()
-        charts7()
-        charts8()
-        charts9()
+        charts1();
+        charts2();
+        charts3();
+        charts4();
+        charts5();
+        charts6();
+        charts7();
+        charts8();
+        charts9();
         function charts1() {
             var mCharts = echarts.init(document.getElementById('node-cpu-use'), 'macarons');
-            // var xDataArr = ['7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
-            //     '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
-            //     '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11']
-            // var yDataArr = [0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
-            //     0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
-            //     0.45, 0.86, 0.42, 0.74, 0.75, 0.62]
-            var xDataArr = [];
-            var yDataArr = [];
+            var xDataArr = ['7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
+                '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
+                '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11'];
+            var yDataArr = [0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
+                0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
+                0.45, 0.86, 0.42, 0.74, 0.75, 0.62];
             var option = {
                 xAxis: {
                     type: 'category',
@@ -203,18 +206,17 @@
                         }
                     }
                 ]
-            }
-            mCharts.setOption(option)
+            };
+            mCharts.setOption(option);
+            mCharts.showLoading();
         }
         function charts2() {
             var mCharts = echarts.init(document.getElementById('node-memory-use'), 'macarons');
-            // var xDataArr = ['7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
-            //     '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11']
-            // var yDataArr = [ 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
-            //     0.45, 0.86, 0.42, 0.74, 0.75, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
-            //     0.45, 0.86, 0.42, 0.74, 0.75, 0.62]
-            var xDataArr = [];
-            var yDataArr = [];
+            var xDataArr = ['7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
+                '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11'];
+            var yDataArr = [ 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
+                0.45, 0.86, 0.42, 0.74, 0.75, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
+                0.45, 0.86, 0.42, 0.74, 0.75, 0.62];
             var option = {
                 xAxis: {
                     type: 'category',
@@ -268,15 +270,14 @@
                     }
                 ]
             }
-            mCharts.setOption(option)
+            mCharts.setOption(option);
+            mCharts.showLoading();
         }
         function charts3() {
             var mCharts = echarts.init(document.getElementById('disk-throught'),'macarons');
             //var mCharts = echarts.init(document.querySelector('cpu-charts'))
-            // var xDataArr = ['7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11']
-            // var yDataArr = [0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62]
-            var xDataArr = [];
-            var yDataArr = [];
+            var xDataArr = ['7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11'];
+            var yDataArr = [0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62];
             var option = {
                 xAxis: {
                     type: 'category',
@@ -326,16 +327,14 @@
                         }
                     }
                 ]
-            }
-            mCharts.setOption(option)
+            };
+            mCharts.setOption(option);
+            mCharts.showLoading();
         }
         function charts4() {
             var mCharts = echarts.init(document.getElementById('disk-iop'),'macarons');
-            //var mCharts = echarts.init(document.querySelector('cpu-charts'))
-            // var xDataArr = ['7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11']
-            // var yDataArr = [0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62]
-            var xDataArr = [];
-            var yDataArr = [];
+            var xDataArr = ['7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11'];
+            var yDataArr = [0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62];
             var option = {
                 xAxis: {
                     type: 'category',
@@ -385,12 +384,12 @@
                         }
                     }
                 ]
-            }
-            mCharts.setOption(option)
+            };
+            mCharts.setOption(option);
+            mCharts.showLoading();
         }
         function charts5() {
             var mCharts = echarts.init(document.getElementById('pods'),'macarons');
-            // var mCharts = echarts.init(document.querySelector("pods"))
             // pieData就是需要设置给饼图的数据, 数组,数组中包含一个又一个的对象, 每一个对象中, 需要有name和value
             var pieData = [
                 {
@@ -405,7 +404,7 @@
                     name: '未使用',
                     value: 40
                 }
-            ]
+            ];
             var option = {
                 series: [
                     {
@@ -425,8 +424,8 @@
                         //  selectedOffset: 60
                     }
                 ]
-            }
-            mCharts.setOption(option)
+            };
+            mCharts.setOption(option);
         }
         function charts6() {
             var mCharts = echarts.init(document.getElementById('node-cpu-request'),'macarons');
@@ -465,8 +464,8 @@
                         value: 56.2
                     }]
                 }]
-            }
-            mCharts.setOption(option)
+            };
+            mCharts.setOption(option);
         }
         function charts7() {
             var mCharts = echarts.init(document.getElementById('node-memory-request'),'macarons');
@@ -505,19 +504,17 @@
                         value: 84
                     }]
                 }]
-            }
-            mCharts.setOption(option)
+            };
+            mCharts.setOption(option);
         }
         function charts8() {
             var mCharts = echarts.init(document.getElementById('node-cpu-ratio'), 'macarons');
-            // var xDataArr = ['7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
-            //     '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
-            //     '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11']
-            // var yDataArr = [0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
-            //     0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
-            //     0.45, 0.86, 0.42, 0.74, 0.75, 0.62]
-            var xDataArr = [];
-            var yDataArr = [];
+            var xDataArr = ['7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
+                '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
+                '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11'];
+            var yDataArr = [0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
+                0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
+                0.45, 0.86, 0.42, 0.74, 0.75, 0.62];
             var option = {
                 xAxis: {
                     type: 'category',
@@ -569,18 +566,17 @@
 
                     }
                 ]
-            }
-            mCharts.setOption(option)
+            };
+            mCharts.setOption(option);
+            mCharts.showLoading();
         }
         function charts9() {
             var mCharts = echarts.init(document.getElementById('node-memory-ratio'), 'macarons');
-            // var xDataArr = ['7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
-            //     '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11']
-            // var yDataArr = [ 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
-            //     0.45, 0.86, 0.42, 0.74, 0.75, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
-            //     0.45, 0.86, 0.42, 0.74, 0.75, 0.62]
-            var xDataArr = [];
-            var yDataArr = [];
+            var xDataArr = ['7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09',
+                '7:10', '7:11', '7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11'];
+            var yDataArr = [ 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
+                0.45, 0.86, 0.42, 0.74, 0.75, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62, 0.7, 0.83, 0.62, 0.4, 0.7, 0.65,
+                0.45, 0.86, 0.42, 0.74, 0.75, 0.62];
             var option = {
                 xAxis: {
                     type: 'category',
@@ -632,10 +628,11 @@
                         }
                     }
                 ]
-            }
-            mCharts.setOption(option)
+            };
+            mCharts.setOption(option);
+            mCharts.showLoading();
         }
-    }
+    };
 
     function ajax_update_all() {
         $.ajax({
@@ -716,6 +713,7 @@
                     ]
                 };
                 chart1.setOption(option1);
+                chart1.hideLoading();
 
 
             //    图表2MEMERY使用量的修改
@@ -773,6 +771,7 @@
                     ]
                 };
                 chart2.setOption(option2);
+                chart2.hideLoading();
 
             //    图表3：磁盘利用率
                 var disk_through = echarts.init(document.getElementById('disk-throught'),'macarons');
@@ -827,6 +826,7 @@
                     ]
                 };
                 disk_through.setOption(option8);
+                disk_through.hideLoading();
 
                 // 9
                 var disk_iop = echarts.init(document.getElementById('disk-iop'),'macarons');
@@ -881,6 +881,7 @@
                     ]
                 };
                 disk_iop.setOption(option9);
+                disk_iop.hideLoading();
 
             //    图8 Disk利用量
                 var chart3 = echarts.init(document.getElementById('node-cpu-ratio'), 'macarons');
@@ -937,6 +938,7 @@
                     ]
                 };
                 chart3.setOption(option3);
+                chart3.hideLoading();
 
             //    图9：Disk利用率
                 var chart4 = echarts.init(document.getElementById('node-memory-ratio'), 'macarons');
@@ -993,7 +995,7 @@
                     ]
                 };
                 chart4.setOption(option4);
-
+                chart4.hideLoading();
 
             }
         });
