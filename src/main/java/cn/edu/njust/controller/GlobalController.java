@@ -232,6 +232,13 @@ public class GlobalController {
         return node;
     }
 
+    /**
+     * 获取node页面上的所有信息
+     * @param model
+     * @param session
+     * @return
+     * @throws ApiException
+     */
     @RequestMapping(value = "/getPodInfoForAllNodes")
     public @ResponseBody Map<Object,Object> getPodInfoForAllNodes(Model model,HttpSession session)throws ApiException{
         Map<Object,Object> result = infoService.getPodInfo(true);
@@ -282,5 +289,10 @@ public class GlobalController {
         podPage.put("forNode3",forNode3);
         session.setAttribute("podPage",podPage);
         return podPage;
+    }
+
+    @RequestMapping(value = "/increase")
+    public String increase(Model model,HttpSession session){
+        return "redirect: /to/index.do";
     }
 }

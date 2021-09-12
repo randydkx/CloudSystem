@@ -103,6 +103,25 @@
                 <tbody> </tbody>
             </table>
 
+
+            <div class="deploy-title2">
+                deployment详细信息：
+            </div>
+            <table class="table table-bordered table-advance table-hover" id="deploymentTable">
+                <thead style="border: black">
+                <tr>
+                                <th>name</th>
+                                <th>ready</th>
+                                <th>uptodate</th>
+                                <th>available</th>
+                                <th>namespace</th>
+                                <th><a href="/global/increase.do">增加pod</a></th>
+                                <th><a href="/global/decrease.do">减少pod</a></th>
+                            </tr>
+                            </thead>
+                            <tbody> </tbody>
+                        </table>
+
         </div>
     </div>
 </div>
