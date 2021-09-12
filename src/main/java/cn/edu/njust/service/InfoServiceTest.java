@@ -4,6 +4,7 @@ import cn.edu.njust.entity.ContainerInfo;
 import cn.edu.njust.entity.Deployment;
 import cn.edu.njust.entity.NodeInfo;
 import cn.edu.njust.entity.PodInfo;
+import cn.edu.njust.utils.MainUtils;
 import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.apis.ApiextensionsApi;
 import org.junit.Test;
@@ -22,8 +23,8 @@ import static org.junit.Assert.*;
 public class InfoServiceTest {
         @Test
     public void testGetPodInfo() throws IOException, ApiException {
-        InfoService infoService=new InfoService("C:\\config");
-        Map<Object,Object> result = infoService.getPodInfo();
+        InfoService infoService=new InfoService(MainUtils.KUBE_CONFIG_PATH);
+        Map<Object,Object> result = infoService.getPodInfo(true);
         List<PodInfo> podInfos = (List<PodInfo>)result.get("totalPodList");
         List<PodInfo> forNode1 = (List<PodInfo>)result.get("forNode1");
         List<PodInfo> forNode2 = (List<PodInfo>)result.get("forNode2");

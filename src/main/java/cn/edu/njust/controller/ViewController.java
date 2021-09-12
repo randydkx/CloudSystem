@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.faces.component.html.HtmlPanelGrid;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -33,9 +34,10 @@ public class ViewController {
      * @return
      */
     @RequestMapping("/index")
-    public String toIndexPage(Model model) throws ApiException{
+    public String toIndexPage(Model model, HttpSession session) throws ApiException{
         model.addAttribute("CONTAIN_3_NODES",MainUtils.CONTAIN_3_NODES);
         List<NodeInfo> nodeList = infoService.getNodeInfo();
+        session.setAttribute("nodeList",nodeList);
         model.addAttribute("nodeList",nodeList);
         model.addAttribute("defaultMaster",true);
         return "page/index";

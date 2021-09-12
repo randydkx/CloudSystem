@@ -30,6 +30,8 @@ public class MainUtils {
     public static String KUBE_CONFIG_PATH = "C:\\config";
     //是否包含第三个节点
     public static Boolean CONTAIN_3_NODES = false;
+    //用于pod资源专门可视化的pod名称
+    public static String DEPLOYMENT_NAME = "rubis-deployment";
 
 
     public static String PORT = "22";

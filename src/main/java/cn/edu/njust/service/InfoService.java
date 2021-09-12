@@ -142,7 +142,7 @@ public class InfoService {
      * @return List<PodInfo> pod相关数据的list
      * @throws ApiException api调用异常
      */
-    public Map<Object,Object> getPodInfo() throws ApiException {
+    public Map<Object,Object> getPodInfo(Boolean CONTAIN_3_NODES) throws ApiException {
         Map<Object,Object> res = new HashMap<Object, Object>();
         List<PodInfo> totalPodList = new ArrayList<>();
         PodInfo pod;
@@ -156,7 +156,7 @@ public class InfoService {
         String result2 = (String) linux.getData(masterDataBase,"kubectl describe node " + MainUtils.NODE_ONE_NAME).get("return");
 //        获取node-2的pod信息，当前未开node-2
         String result3 = null;
-        if (MainUtils.CONTAIN_3_NODES){
+        if (CONTAIN_3_NODES){
             result3 = (String) linux.getData(masterDataBase,"kubectl describe node " + MainUtils.NODE_TWO_NAME).get("return");
         }
 
@@ -194,7 +194,7 @@ public class InfoService {
                     forNode2.add(pod);
                 }else{
 //                    包含第三个节点的时候对第三个节点中的pod的Usage进行获取
-                    if(MainUtils.CONTAIN_3_NODES){
+                    if(CONTAIN_3_NODES){
                         map = getUsageByPodName(podName,result3);
                         if((Boolean)map.get("hasPod")){
                             pod.setUsage((Usage)map.get("usage"));
@@ -269,7 +269,13 @@ public class InfoService {
         LinuxShellUtil linux = new LinuxShellUtil();
         HashMap<Object,Object> map = new HashMap<Object, Object>();
 //        通过listpod获取的是集群的全部pod
-        String result = (String) linux.getData(masterDataBase,"kubectl describe node " + nodeName).get("return");
+        String result = null;
+        int count = 0;
+        while(result == null){
+            result = (String) linux.getData(masterDataBase,"kubectl describe node " + nodeName).get("return");
+            count ++;
+        }
+        System.out.println("getData次数："+count);
 //        System.out.println(result);
         Usage usage = new Usage();
         assert result != null ;
@@ -350,15 +356,12 @@ public class InfoService {
             nodeInfo=new NodeInfo(nodeAddress,nodeName);
 //            通过nodeName获取节点的CPU和内存用量
             HashMap<Object,Object> map = this.getNodeUsageByName(nodeInfo.getName());
-            if(map.containsKey("usage") == false){
+            if(!map.containsKey("usage") || !map.containsKey("role") || !map.containsKey("coreNum")){
                 nodeInfo.setUsage(new Usage());
                 nodeInfo.setCoreNum(0);
                 nodeInfo.setRole("node");
                 continue;
             }
-            assert map.containsKey("usage");
-            assert map.containsKey("coreNum");
-            assert map.containsKey("role");
 
             nodeInfo.setUsage((Usage)map.get("usage"));
             nodeInfo.setCoreNum((int)map.get("coreNum"));

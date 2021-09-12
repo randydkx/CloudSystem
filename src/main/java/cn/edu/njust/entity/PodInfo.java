@@ -48,6 +48,8 @@ public class PodInfo {
         return status;
     }
 
+    public Usage getUsage(){return usage;}
+
     public String getAge() {
         return age;
     }

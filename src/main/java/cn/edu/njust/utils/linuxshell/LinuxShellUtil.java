@@ -59,7 +59,7 @@ public class LinuxShellUtil {     //其他Linux机器执行脚本工具类   需
             // 设置第一次登陆的时候提示，可选值:(ask | yes | no)
             session.setConfig("StrictHostKeyChecking", "no");
             // 连接超时
-            session.connect(10000 * 10);
+            session.connect(10000 * 10000);
             byte[] tmp = new byte[1024];
             // 命令返回的结果
             StringBuffer resultBuffer = new StringBuffer();
@@ -68,7 +68,7 @@ public class LinuxShellUtil {     //其他Linux机器执行脚本工具类   需
             // 返回结果流（命令执行错误的信息通过getErrStream获取）
             InputStream stdStream = exec.getInputStream();
             exec.setCommand(sql);
-            exec.connect();
+            exec.connect(5000);
             try {
                 // 开始获得SSH命令的结果
                 while (true) {

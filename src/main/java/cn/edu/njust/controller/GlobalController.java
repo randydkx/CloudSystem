@@ -232,4 +232,55 @@ public class GlobalController {
         return node;
     }
 
+    @RequestMapping(value = "/getPodInfoForAllNodes")
+    public @ResponseBody Map<Object,Object> getPodInfoForAllNodes(Model model,HttpSession session)throws ApiException{
+        Map<Object,Object> result = infoService.getPodInfo(true);
+//        List<PodInfo> podInfos = (List<PodInfo>)result.get("totalPodList");
+        List<PodInfo> forNode1 = (List<PodInfo>)result.get("forNode1");
+        List<PodInfo> forNode2 = (List<PodInfo>)result.get("forNode2");
+        List<PodInfo> forNode3 = (List<PodInfo>)result.get("forNode3");
+        PodInfo rubis_deployment = null;
+//        查找rubis-deployment
+        for(PodInfo podInfo : forNode2){
+            if(podInfo.getName().contains(MainUtils.DEPLOYMENT_NAME)){
+                rubis_deployment = podInfo;
+                break;
+            }
+        }
+        assert rubis_deployment != null;
+        Map<Object,Object> podPage = null;
+        if(session.getAttribute("podPage") == null){
+            podPage = new HashMap<Object, Object>();
+        }else{
+            podPage = (Map<Object,Object>)session.getAttribute("podPage");
+        }
+        //        根据session取该应用的资源用量
+        List<Double> cpuUsageList = null;
+        List<Double> memUsageList = null;
+        List<String> timeLine = null;
+        assert podPage!=null;
+        if(podPage.containsKey("cpuUsageList") == false){
+            assert podPage.containsKey("memUsageList") == false;
+            assert podPage.containsKey("timeLine") == false;
+            cpuUsageList = new ArrayList<Double>();
+            memUsageList = new ArrayList<Double>();
+            timeLine = new ArrayList<String>();
+        }else{
+            cpuUsageList = (List<Double>)podPage.get("cpuUsageList");
+            memUsageList = (List<Double>)podPage.get("memUsageList");
+            timeLine = (List<String>)podPage.get("timeLine");
+        }
+
+        cpuUsageList.add(rubis_deployment.getUsage().getCPURatio());
+        memUsageList.add(rubis_deployment.getUsage().getMemoryRatio());
+        timeLine.add(MainUtils.getCurrentHMSTime());
+        podPage.put("cpuUsageList",cpuUsageList);
+        podPage.put("memUsageList",memUsageList);
+        podPage.put("timeLine",timeLine);
+        podPage.put("forNode1",forNode1);
+        podPage.put("forNode2",forNode2);
+        podPage.put("forNode3",forNode3);
+        session.setAttribute("podPage",podPage);
+        return podPage;
+    }
 }
