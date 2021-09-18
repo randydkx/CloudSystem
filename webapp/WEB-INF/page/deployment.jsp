@@ -100,7 +100,16 @@
                     <th>查看</th>
                 </tr>
                 </thead>
-                <tbody> </tbody>
+                <tbody>
+                    <td>加载中...</td>
+                    <td>加载中...</td>
+                    <td>加载中...</td>
+                    <td>加载中...</td>
+                    <td>加载中...</td>
+                    <td>加载中...</td>
+                    <td>加载中...</td>
+
+                </tbody>
             </table>
 
 
@@ -115,11 +124,21 @@
                                 <th>uptodate</th>
                                 <th>available</th>
                                 <th>namespace</th>
-                                <th><a href="/global/increase.do">增加pod</a></th>
-                                <th><a href="/global/decrease.do">减少pod</a></th>
+                                <th>operation(+)</th>
+                                <th>operation(-)</th>
                             </tr>
                             </thead>
-                            <tbody> </tbody>
+                            <tbody>
+                                <tr>
+                                    <td>加载中...</td>
+                                    <td>加载中...</td>
+                                    <td>加载中...</td>
+                                    <td>加载中...</td>
+                                    <td>加载中...</td>
+                                    <td>加载中...</td>
+                                    <td>加载中...</td>
+                                </tr>
+                            </tbody>
                         </table>
 
         </div>
@@ -199,7 +218,7 @@
             mCharts.showLoading();
         }
 
-    }
+    };
 
     function Ajax_get_request_table(){
         $.ajax({
@@ -297,9 +316,39 @@
         });
     }
 
+    function Ajax_get_deployment_table(){
+        $.ajax({
+            type:"GET",
+            dataType:"json",
+            url: '<%=basePath%>/global/getDeploymentList.do',
+            async:true,
+            contentType: 'application/json;charset=utf-8',
+            success:function(data){
+                let deploymentList = eval(data);
+                var tbody=$('<tbody></tbody>');
+                $(deploymentList).each(function (index){
+                    var val=deploymentList[index];
+                    var tr=$('<tr></tr>');
+                    tr.append(
+                        '<td>'+ val.name + '</td>' +
+                        '<td>'+ val.ready + '</td>' +
+                        '<td>'+ val.upToData + '</td>' +
+                        '<td>'+ val.available + '</td>'+
+                        '<td>'+ val.namespace + '</td>'+
+                        '<td><a href="<%=basePath%>/global/increase.do?name='+ val.name + '&num=' + val.upToData +'&namespace='+val.namespace+'">增加pod</a></td>' +
+                        '<td><a href="<%=basePath%>/global/decrease.do?name='+ val.name + '&num=' + val.upToData +'&namespace='+val.namespace+'">减少pod</a></td>'
+                    );
+                    tbody.append(tr);
+                });
+                $('#deploymentTable tbody').replaceWith(tbody);
+            }
+        });
+    }
+
     //设置ajax轮询
     $(function(){
-        setInterval(Ajax_get_request_table,3000);
+        setInterval(Ajax_get_request_table,5000);
+        setInterval(Ajax_get_deployment_table,5000);
     })
 
 </script>

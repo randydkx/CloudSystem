@@ -1,6 +1,7 @@
 package cn.edu.njust.controller;
 
 import cn.edu.njust.entity.*;
+import cn.edu.njust.entity.Deployment;
 import cn.edu.njust.service.InfoService;
 import cn.edu.njust.service.LogService;
 import cn.edu.njust.utils.MainUtils;
@@ -42,6 +43,11 @@ public class GlobalController {
 
     GlobalController() throws IOException {infoService = new InfoService(MainUtils.KUBE_CONFIG_PATH);}
 
+    /**
+     * 关于rubis-deployment的请求列表信息Ajax接口
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/requestList")
     public  @ResponseBody HashMap<Object, Object>  getRequestList(Model model){
         List<Request> requestList = LogService.getRequests();
@@ -109,6 +115,13 @@ public class GlobalController {
         return map;
     }
 
+    /**
+     * node.jsp页面通过Ajax刷新的请求
+     * @param model
+     * @param session
+     * @return
+     * @throws ApiException
+     */
     @RequestMapping(value = "/nodeInfoUpdate")
     public @ResponseBody Map<Object,Object> NodeInfoUpdate(Model model,HttpSession session) throws ApiException {
         List<NodeInfo> nodeList = infoService.getNodeInfo();
@@ -291,8 +304,38 @@ public class GlobalController {
         return podPage;
     }
 
+
     @RequestMapping(value = "/increase")
-    public String increase(Model model,HttpSession session){
-        return "redirect: /to/index.do";
+    public String increase(@RequestParam String name,@RequestParam int num,@RequestParam String namespace){
+//        String name = "rubis-deployment";
+        System.out.println(name+" "+num+" "+namespace);
+        infoService.changeDeploymentReplicas(namespace,name,num + 1);
+        return "redirect: toload.do";
     }
+
+    @RequestMapping(value = "/decrease")
+    public String decrease(@RequestParam String name,@RequestParam int num,@RequestParam String namespace){
+//        String name = "rubis-deployment";
+        if(num > 1){
+            infoService.changeDeploymentReplicas(namespace,name,num - 1);
+        }
+        return "redirect: toload.do";
+    }
+
+    @RequestMapping(value = "/toload")
+    public String toload(){
+        return "page/load";
+    }
+
+    /**
+     * Ajax请求获取所有deployment
+     * @param model
+     * @param session
+     * @return
+     */
+    @RequestMapping(value = "/getDeploymentList")
+    public @ResponseBody List<Deployment> getDeployment(Model model,HttpSession session){
+        return infoService.getAllDeploymentInfo();
+    }
+
 }
