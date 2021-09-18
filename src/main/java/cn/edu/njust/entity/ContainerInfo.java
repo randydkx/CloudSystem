@@ -15,6 +15,22 @@ public class ContainerInfo {
         this.image = image;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     @Override
     public String toString() {
         return "ContainerInfo{" +

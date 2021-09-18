@@ -39,6 +39,9 @@
         <li class="li">
             <a href="<%=basePath%>/to/deployment.do" class="nav-text">load</a>
         </li>
+        <li class="li">
+            <a href="<%=basePath%>/to/container" class="nav-text">Containers</a>
+        </li>
     </ul>
 </nav>
 <!--选择-->
@@ -75,15 +78,15 @@
     </div>
 </div>
 <!--请求-->
-<%--<div class="container-status">--%>
-<%--    <div class="container-status-title">Containers' Status</div>--%>
+<div class="container-status">
+    <div class="container-status-title">Pods' Status</div>
     <div id="container-status"></div>
-<%--</div>--%>
+</div>
 
 <div style="margin-left: 17%;width: 75%;">
     <div>
         <c:forEach varStatus="status" items="${sessionScope.nodeList}" var="node" >
-            <div class="pod-title2">
+            <div class="deploy-title2">
                     ${node.name}中pods的详细信息：
             </div>
             <div style="height: 20px"></div>
@@ -99,7 +102,14 @@
                         <th>查看</th>
                     </tr>
                     </thead>
-                    <tbody> </tbody>
+                    <tbody>
+                        <td>加载中...</td>
+                        <td>加载中...</td>
+                        <td>加载中...</td>
+                        <td>加载中...</td>
+                        <td>加载中...</td>
+                        <td>加载中...</td>
+                    </tbody>
                 </table>
             </div>
         </c:forEach>
@@ -112,7 +122,7 @@
     window.onload = function () {
         charts1();
         charts2();
-        // charts3();
+        charts3();
 
         function charts1() {
             var mCharts = echarts.init(document.getElementById('pod-cpu-use'), 'macarons');
@@ -243,120 +253,58 @@
             mCharts.setOption(option);
             mCharts.showLoading();
         }
-        // function charts3() {
-        //     var mCharts = echarts.init(document.getElementById('container-status'),'macarons');
-        //     var xDataArr = ['7:00', '7:01', '7:02', '7:03', '7:04', '7:05', '7:06', '7:07', '7:08', '7:09', '7:10', '7:11'];
-        //     var yDataArr1 = [0.7, 0.83, 0.62, 0.4, 0.7, 0.65, 0.45, 0.86, 0.42, 0.74, 0.75, 0.62];
-        //     var yDataArr2 = [0.5, 0.7, 0.6, 0.2, 0.4, 0.6, 0.4, 0.6, 0.32, 0.8, 0.7, 0.6];
-        //     var yDataArr3 = [0.8, 0.4, 0.5, 0.3, 0.7, 0.4, 0.46, 0.86, 0.42, 0.74, 0.75, 0.62];
-        //     var option = {
-        //         xAxis: {
-        //             type: 'category',
-        //             data: xDataArr,
-        //             boundaryGap: false
-        //         },
-        //         yAxis: {
-        //             type: 'value',
-        //             //scale: true
-        //         },
-        //         grid: {
-        //             left: '3%',
-        //             top: '5%',
-        //             bottom: '8%',
-        //             right: '3%',
-        //             // containLabel: true
-        //         },
-        //         legend:{
-        //             data:['1','2']
-        //         },
-        //         series: [
-        //             {
-        //                 symbol:'none',
-        //                 name: '占比',
-        //                 data: yDataArr1,
-        //                 type: 'line',
-        //                 smooth: true,
-        //                 lineStyle: {
-        //                     color: '#f4a460',
-        //                     type: 'solid'//虚线
-        //                 },
-        //                 areaStyle: {
-        //                     // color: 	'#ffdead'
-        //                     color: {
-        //                         type: 'linear',
-        //                         x: 0,
-        //                         y: 0,
-        //                         x2: 0,
-        //                         y2: 1,
-        //                         colorStops: [{
-        //                             offset: 0, color: '#ffdead'// 0% 处的颜色
-        //                         }, {
-        //                             offset: 1, color: '#f4a460' // 100% 处的颜色
-        //                         }],
-        //                         global: false // 缺省为 false
-        //                     }
-        //                 }
-        //             },
-        //             {
-        //                 symbol:'none',
-        //                 name: '占比',
-        //                 data: yDataArr2,
-        //                 type: 'line',
-        //                 smooth: true,
-        //                 lineStyle: {
-        //                     color: '#00bfff',
-        //                     type: 'solid'//虚线
-        //                 },
-        //                 areaStyle: {
-        //                     // color: 	'#ffdead'
-        //                     color: {
-        //                         type: 'linear',
-        //                         x: 0,
-        //                         y: 0,
-        //                         x2: 0,
-        //                         y2: 1,
-        //                         colorStops: [{
-        //                             offset: 0, color: '#87ceeb'// 0% 处的颜色
-        //                         }, {
-        //                             offset: 1, color: '#00bfff' // 100% 处的颜色
-        //                         }],
-        //                         global: false // 缺省为 false
-        //                     }
-        //                 }
-        //             },
-        //             {
-        //                 symbol:'none',
-        //                 name: '占比',
-        //                 data: yDataArr3,
-        //                 type: 'line',
-        //                 smooth: true,
-        //                 lineStyle: {
-        //                     color: '#800080',
-        //                     type: 'solid'//虚线
-        //                 },
-        //                 areaStyle: {
-        //                     // color: 	'#ffdead'
-        //                     color: {
-        //                         type: 'linear',
-        //                         x: 0,
-        //                         y: 0,
-        //                         x2: 0,
-        //                         y2: 1,
-        //                         colorStops: [{
-        //                             offset: 0, color: '#9400d3'// 0% 处的颜色
-        //                         }, {
-        //                             offset: 1, color: '#9932cc' // 100% 处的颜色
-        //                         }],
-        //                         global: false // 缺省为 false
-        //                     }
-        //                 }
-        //             }
-        //         ]
-        //     };
-        //
-        //     mCharts.setOption(option);
-        //     mCharts.showLoading();
-        // }
+        function charts3() {
+
+            var mCharts = echarts.init(document.getElementById('container-status'),'macarons');
+            var pieData = [
+                {
+                    name: 'Running',
+                    value: 20
+                },
+                {
+                    name: 'Pending',
+                    value: 30
+                },
+                {
+                    name: 'Others',
+                    value: 40
+                }
+            ];
+            var option = {
+                legend:{
+                    bottom:'2%',
+                    left:'center'
+                },
+                series: [
+                    {
+                        type: 'pie',
+                        data: pieData,
+                        label:{
+                            show:true,//显示文字
+                            formatter:function (arg) {
+                                return arg.name + arg.percent +'%'
+                            }
+                        },
+                        emphasis:{
+                            label:{
+                                show: true,
+                                fontSize:'20',
+                                fontWeight:'bold'
+                            }
+                        },
+                        //  radius:20//饼图的半径
+                        radius:['40%','60%'],
+                        //  roseType:true,
+                        selectedMode:'single',//选中后,选中的部分偏离主体一小段距离
+                        //  selectedMode:'multiple',//可以选中多个区域,
+                         selectedOffset: 60
+                    }
+                ]
+            };
+
+            mCharts.setOption(option);
+            mCharts.showLoading();
+        }
     };
 
     function Ajax_get_Pod_Usage(){
@@ -367,7 +315,9 @@
             async:true,
             contentType: 'application/json;charset=utf-8',
             success:function(data){
-                // var requestList=eval(data)['requestList'];
+                var running_num = 0;
+                var pending_num = 0;
+                var others_num = 0;
                 var map = eval(data)
                 var forNode1 = map['forNode1'];
                 var forNode2 = map['forNode2'];
@@ -379,10 +329,13 @@
                     var typeString = ""
                     if(val.status == "Running"){
                         typeString = "success";
+                        running_num += 1;
                     }else if(val.status == "Pending"){
                         typeString = "warning";
+                        pending_num += 1;
                     }else{
                         typeString = "danger";
+                        others_num += 1;
                     }
                     tr.append(
                         '<td>'+ val.name + '</td>' +
@@ -403,10 +356,13 @@
                     var typeString = ""
                     if(val.status == "Running"){
                         typeString = "success";
+                        running_num += 1;
                     }else if(val.status == "Pending"){
                         typeString = "warning";
+                        pending_num += 1;
                     }else{
                         typeString = "danger";
+                        others_num += 1;
                     }
                     tr.append(
                         '<td>'+ val.name + '</td>' +
@@ -427,10 +383,13 @@
                     var typeString = ""
                     if(val.status == "Running"){
                         typeString = "success";
+                        running_num += 1;
                     }else if(val.status == "Pending"){
                         typeString = "warning";
+                        pending_num += 1;
                     }else{
                         typeString = "danger";
+                        others_num += 1;
                     }
                     tr.append(
                         '<td>'+ val.name + '</td>' +
@@ -560,6 +519,56 @@
                 };
                 memUsageChart.setOption(option2);
                 memUsageChart.hideLoading();
+
+                var containerStatus = echarts.init(document.getElementById('container-status'),'macarons');
+                var pieData = [
+                    {
+                        name: 'Running',
+                        value: running_num
+                    },
+                    {
+                        name: 'Pending',
+                        value: pending_num
+                    },
+                    {
+                        name: 'Others',
+                        value: others_num
+                    }
+                ];
+                var option_container_status = {
+                    legend:{
+                        bottom:'2%',
+                        left:'center'
+                    },
+                    series: [
+                        {
+                            type: 'pie',
+                            data: pieData,
+                            label:{
+                                show:true,//显示文字
+                                formatter:function (arg) {
+                                    return arg.name + arg.percent +'%'
+                                }
+                            },
+                            emphasis:{
+                                label:{
+                                    show: true,
+                                    fontSize:'20',
+                                    fontWeight:'bold'
+                                }
+                            },
+                            //  radius:20//饼图的半径
+                            radius:['40%','60%'],
+                            //  roseType:true,
+                            selectedMode:'single',//选中后,选中的部分偏离主体一小段距离
+                            //  selectedMode:'multiple',//可以选中多个区域,
+                            selectedOffset: 60
+                        }
+                    ]
+                };
+
+                containerStatus.setOption(option_container_status);
+                containerStatus.hideLoading();
             }
         });
     }

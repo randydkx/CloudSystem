@@ -43,6 +43,9 @@
         <li class="li">
             <a href="<%=basePath%>/to/deployment.do" class="nav-text">load</a>
         </li>
+        <li class="li">
+            <a href="<%=basePath%>/to/container" class="nav-text">Containers</a>
+        </li>
     </ul>
 </nav>
 
@@ -109,6 +112,18 @@
                             <td><a href="<%=basePath%>/to/load.do" class="btn btn-xs">View</a></td>
                         </tr>
                     </c:forEach>
+                </c:if>
+                <c:if test="${empty requestScope.nodeList}">
+                    <tr>
+                        <td>加载中...</td>
+                        <td>加载中...</td>
+                        <td>加载中...</td>
+                        <td>加载中...</td>
+                        <td>加载中...</td>
+                        <td>加载中...</td>
+                        <td>加载中...</td>
+                        <td>加载中...</td>
+                    </tr>
                 </c:if>
                 </tbody>
             </table>

@@ -40,6 +40,9 @@
         <li class="li">
             <a href="<%=basePath%>/to/deployment.do" class="nav-text">load</a>
         </li>
+        <li class="li">
+            <a href="<%=basePath%>/to/container" class="nav-text">Containers</a>
+        </li>
     </ul>
 </nav>
 <!--选择-->
@@ -426,6 +429,7 @@
                 ]
             };
             mCharts.setOption(option);
+            mCharts.showLoading();
         }
         function charts6() {
             var mCharts = echarts.init(document.getElementById('node-cpu-request'),'macarons');
@@ -466,6 +470,7 @@
                 }]
             };
             mCharts.setOption(option);
+            mCharts.showLoading();
         }
         function charts7() {
             var mCharts = echarts.init(document.getElementById('node-memory-request'),'macarons');
@@ -506,6 +511,7 @@
                 }]
             };
             mCharts.setOption(option);
+            mCharts.showLoading();
         }
         function charts8() {
             var mCharts = echarts.init(document.getElementById('node-cpu-ratio'), 'macarons');
@@ -643,8 +649,6 @@
             contentType: 'application/json;charset=utf-8',
             success:function(data){
                 var obj = eval(data);
-                // var nodeInfo = obj['nodeInfo'];
-                // var time = obj['time'];
                 let chart1 = echarts.init(document.getElementById('node-cpu-use'),'macarons');
                 let chart2 = echarts.init(document.getElementById('node-memory-use'), 'macarons');
                 var chart1x = obj['chart1x'];
@@ -659,6 +663,9 @@
                 var chart8y = obj['chart8y'];
                 var chart9x = obj['chart9x'];
                 var chart9y = obj['chart9y'];
+                var chart5 = obj['chart5'];
+                var chart6 = obj['chart6'];
+                var chart7 = obj['chart7'];
 
                 //图表1 CPU使用量的修改
                 var option1 = {
@@ -828,7 +835,7 @@
                 disk_through.setOption(option8);
                 disk_through.hideLoading();
 
-                // 9
+                // disk吞吐量
                 var disk_iop = echarts.init(document.getElementById('disk-iop'),'macarons');
                 var option9 = {
                     xAxis: {
@@ -883,7 +890,7 @@
                 disk_iop.setOption(option9);
                 disk_iop.hideLoading();
 
-            //    图8 Disk利用量
+            //    cpu利用率图
                 var chart3 = echarts.init(document.getElementById('node-cpu-ratio'), 'macarons');
                 var option3 = {
                     xAxis: {
@@ -940,8 +947,8 @@
                 chart3.setOption(option3);
                 chart3.hideLoading();
 
-            //    图9：Disk利用率
-                var chart4 = echarts.init(document.getElementById('node-memory-ratio'), 'macarons');
+            //    mem利用率
+                var memRatio = echarts.init(document.getElementById('node-memory-ratio'), 'macarons');
                 var option4 = {
                     xAxis: {
                         type: 'category',
@@ -994,9 +1001,128 @@
                         }
                     ]
                 };
-                chart4.setOption(option4);
-                chart4.hideLoading();
+                memRatio.setOption(option4);
+                memRatio.hideLoading();
 
+            //    pod使用情况
+                var podUsage = echarts.init(document.getElementById('pods'),'macarons');
+                // pieData就是需要设置给饼图的数据, 数组,数组中包含一个又一个的对象, 每一个对象中, 需要有name和value
+                var pieData = [
+                    {
+                        name: '运行',
+                        value: chart5.running
+                    },
+                    {
+                        name: '挂起',
+                        value: chart5.pending
+                    },
+                    {
+                        name: '其他',
+                        value: chart5.others
+                    }
+                ];
+                var option = {
+                    series: [
+                        {
+                            type: 'pie',
+                            data: pieData,
+                            label:{
+                                show:true,//显示文字
+                                formatter:function (arg) {
+                                    return arg.name + arg.percent +'%'
+                                }
+                            },
+                            //  radius:20//饼图的半径
+                            radius:['40%','60%']
+                            //  roseType:true,
+                            // // selectedMode:'single'//选中后,选中的部分偏离主体一小段距离
+                            //  selectedMode:'multiple',//可以选中多个区域,
+                            //  selectedOffset: 60
+                        }
+                    ]
+                };
+                podUsage.setOption(option);
+                podUsage.hideLoading();
+            //    CPU request
+                var cpuR = echarts.init(document.getElementById('node-cpu-request'),'macarons');
+                var option_cpuR = {
+                    series: [{
+                        type: 'gauge',
+                        progress: {
+                            show: true,
+                            width: 18
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                width: 18
+                            }
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        anchor: {
+                            show: true,
+                            showAbove: true,
+                            size: 5,
+                            itemStyle: {
+                                borderWidth: 10
+                            }
+                        },
+                        title: {
+                            show: false
+                        },
+                        detail: {
+                            valueAnimation: true,
+                            fontSize: 20,
+                            offsetCenter: [0, '70%']
+                        },
+                        data: [{
+                            value: chart6
+                        }]
+                    }]
+                };
+                cpuR.setOption(option_cpuR);
+                cpuR.hideLoading();
+            //    memery request
+                var memR = echarts.init(document.getElementById('node-memory-request'),'macarons');
+                var option_memR = {
+                    series: [{
+                        type: 'gauge',
+                        progress: {
+                            show: true,
+                            width: 18
+                        },
+                        axisLine: {
+                            lineStyle: {
+                                width: 18
+                            }
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        anchor: {
+                            show: true,
+                            showAbove: true,
+                            size: 5,
+                            itemStyle: {
+                                borderWidth: 10
+                            }
+                        },
+                        title: {
+                            show: false
+                        },
+                        detail: {
+                            valueAnimation: true,
+                            fontSize: 20,
+                            offsetCenter: [0, '70%']
+                        },
+                        data: [{
+                            value: chart7
+                        }]
+                    }]
+                };
+                memR.setOption(option_memR);
+                memR.hideLoading();
             }
         });
     }

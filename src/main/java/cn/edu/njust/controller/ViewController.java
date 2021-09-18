@@ -78,4 +78,9 @@ public class ViewController {
         }
         return "page/nodes";
     }
+
+    @RequestMapping(value = "container")
+    public String toContainerPage(Model model){
+        return "page/container";
+    }
 }
