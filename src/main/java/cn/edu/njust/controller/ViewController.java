@@ -22,8 +22,8 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(value = "/to")
-public class ViewController {
-    InfoService infoService = null;
+    public class ViewController {
+        InfoService infoService = null;
 
     ViewController() throws IOException {
         infoService = new InfoService(MainUtils.KUBE_CONFIG_PATH);
